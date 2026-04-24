@@ -6,7 +6,9 @@
 
 **Architecture:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + shadcn/ui. TMDB is fetched from Server Components through a server-only wrapper. Vitest + React Testing Library for unit tests. i18n and remaining rows/pages are deferred to later plans.
 
-**Tech Stack:** Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Vitest, React Testing Library, TMDB API (Read Access Token v4).
+**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript, **Tailwind CSS v4** (CSS-based config via `@theme`), shadcn/ui, Vitest, React Testing Library, TMDB API (Read Access Token v4). Font: **Geist** (scaffolded by default).
+
+**Note on Tailwind v4:** The scaffold uses Tailwind v4, which has no `tailwind.config.ts`. Theme tokens are defined inside `@theme` in `globals.css`. PostCSS uses the `@tailwindcss/postcss` plugin. Import is `@import "tailwindcss"`, not `@tailwind base/components/utilities`.
 
 **Deferred to later plans:** next-intl / language toggle, hero banner, remaining homepage rows, detail pages, watch pages, watchlist, history, search, browse. Plan 1 hardcodes UI strings in Indonesian — no translation layer yet.
 
@@ -95,89 +97,63 @@ git commit -m "chore: scaffold Next.js 15 project with TypeScript + Tailwind"
 
 ---
 
-### Task 2: Apply project color palette and font
+### Task 2: Apply project color palette (Tailwind v4 + Geist)
+
+Tailwind v4 uses CSS-based configuration via `@theme`. There is **no** `tailwind.config.ts` file. Theme tokens become utility classes automatically (e.g. `--color-bg` → `bg-bg`, `text-bg`, `border-bg`).
 
 **Files:**
-- Modify: `src/app/globals.css`
-- Modify: `src/app/layout.tsx`
-- Modify: `tailwind.config.ts` (may already be `.js` depending on CNA version — check and rename if so)
+- Modify: `src/app/globals.css` (replace scaffold content)
+- Modify: `src/app/layout.tsx` (set page metadata, language, dark body bg)
 
-- [ ] **Step 1: Replace `src/app/globals.css` with palette**
+- [ ] **Step 1: Replace `src/app/globals.css`**
 
 Write to `src/app/globals.css`:
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --elevated: #1f1f1f;
-  --border: #2a2a2a;
-  --text: #f5f5f5;
-  --muted: #9ca3af;
-  --accent: #e50914;
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-elevated: #1f1f1f;
+  --color-border: #2a2a2a;
+  --color-text: #f5f5f5;
+  --color-muted: #9ca3af;
+  --color-accent: #e50914;
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-html, body {
-  background-color: var(--bg);
-  color: var(--text);
+html,
+body {
   min-height: 100%;
 }
 
 body {
-  font-family: var(--font-inter), system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
 }
 ```
 
-- [ ] **Step 2: Update `tailwind.config.ts`**
-
-Write to `tailwind.config.ts`:
-
-```ts
-import type { Config } from "tailwindcss";
-
-const config: Config = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  theme: {
-    extend: {
-      colors: {
-        bg: "var(--bg)",
-        surface: "var(--surface)",
-        elevated: "var(--elevated)",
-        border: "var(--border)",
-        text: "var(--text)",
-        muted: "var(--muted)",
-        accent: "var(--accent)",
-      },
-      fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-      },
-    },
-  },
-  plugins: [],
-};
-
-export default config;
-```
-
-If `tailwind.config.js` exists instead, delete it first: `rm tailwind.config.js`.
-
-- [ ] **Step 3: Wire Inter font in `src/app/layout.tsx`**
+- [ ] **Step 2: Update `src/app/layout.tsx`**
 
 Replace `src/app/layout.tsx` with:
 
 ```tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -187,32 +163,36 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="id" className={inter.variable}>
-      <body className="bg-bg text-text antialiased">{children}</body>
+    <html
+      lang="id"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="bg-bg text-text min-h-full flex flex-col">
+        {children}
+      </body>
     </html>
   );
 }
 ```
 
-- [ ] **Step 4: Verify**
+- [ ] **Step 3: Verify**
 
 Run:
 ```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`. Expected: page background is near-black (`#0a0a0a`), Inter font applied. Stop with Ctrl+C.
+Open `http://localhost:3000` (or the port the server prints if 3000 is taken). Expected: page background is near-black (`#0a0a0a`), Geist font applied. Stop with Ctrl+C.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
-git add src/app tailwind.config.ts
-git rm -f tailwind.config.js 2>/dev/null || true
-git commit -m "feat: apply dark color palette and Inter font"
+git add src/app
+git commit -m "feat: apply dark color palette via Tailwind v4 @theme"
 ```
 
 ---
