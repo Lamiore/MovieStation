@@ -38,4 +38,50 @@ describe("buildEmbedUrl", () => {
       "https://player.videasy.net/anime/21/1?color=e50914&nextEpisode=true&episodeSelector=true&dub=true",
     );
   });
+
+  it("returns the vidsrc.cc anime URL when provider=vidsrc", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        episode: 1,
+        provider: "vidsrc",
+      }),
+    ).toBe("https://vidsrc.cc/v2/embed/anime/21/1");
+  });
+
+  it("appends ?dub=true for vidsrc anime when dub is on", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        episode: 1,
+        provider: "vidsrc",
+        dub: true,
+      }),
+    ).toBe("https://vidsrc.cc/v2/embed/anime/21/1?dub=true");
+  });
+
+  it("returns the 2embed anime URL when provider=2embed", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        episode: 1,
+        provider: "2embed",
+      }),
+    ).toBe("https://2embed.cc/embedanime/21/1");
+  });
+
+  it("appends ?dub=true for 2embed anime when dub is on", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        episode: 1,
+        provider: "2embed",
+        dub: true,
+      }),
+    ).toBe("https://2embed.cc/embedanime/21/1?dub=true");
+  });
 });
