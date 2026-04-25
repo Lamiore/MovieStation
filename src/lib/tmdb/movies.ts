@@ -13,3 +13,35 @@ export function getTrendingMovies(
     locale: options.locale,
   });
 }
+
+export function getPopularMovies(
+  options: GetTrendingOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/movie/popular", {
+    locale: options.locale,
+  });
+}
+
+export function getTopRatedMovies(
+  options: GetTrendingOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/movie/top_rated", {
+    locale: options.locale,
+  });
+}
+
+export function getUpcomingMovies(
+  options: GetTrendingOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/movie/upcoming", {
+    locale: options.locale,
+  });
+}
+
+export function getNowPlayingMovies(
+  options: GetTrendingOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/movie/now_playing", {
+    locale: options.locale,
+  });
+}

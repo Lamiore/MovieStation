@@ -65,3 +65,42 @@ describe("getTrendingMovies", () => {
     expect(calledUrl.searchParams.get("language")).toBe("en-US");
   });
 });
+
+describe("movie list endpoints", () => {
+  const originalFetch = global.fetch;
+  const originalEnv = process.env.TMDB_READ_TOKEN;
+
+  beforeEach(() => {
+    process.env.TMDB_READ_TOKEN = "test-token";
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    process.env.TMDB_READ_TOKEN = originalEnv;
+    vi.resetModules();
+  });
+
+  const makeOk = () =>
+    new Response(
+      JSON.stringify({ page: 1, results: [], total_pages: 0, total_results: 0 }),
+      { status: 200 },
+    );
+
+  it.each([
+    ["getPopularMovies", "/movie/popular"],
+    ["getTopRatedMovies", "/movie/top_rated"],
+    ["getUpcomingMovies", "/movie/upcoming"],
+    ["getNowPlayingMovies", "/movie/now_playing"],
+  ] as const)("%s calls %s", async (fnName, expectedPath) => {
+    const fetchMock = vi.fn().mockResolvedValue(makeOk());
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const mod = await import("@/lib/tmdb/movies");
+    const fn = (mod as Record<string, unknown>)[fnName] as () => Promise<unknown>;
+    expect(fn).toBeDefined();
+    await fn();
+
+    const url = fetchMock.mock.calls[0][0] as string;
+    expect(url).toContain(expectedPath);
+  });
+});
