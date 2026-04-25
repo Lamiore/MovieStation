@@ -5,22 +5,27 @@ import {
   STORAGE_KEYS,
   makeWatchlistKey,
   type WatchlistItem,
-  type WatchlistKeyInput,
 } from "@/lib/storage/schema";
 import {
   readWatchlist,
   addToWatchlist,
   removeFromWatchlist,
-  type WatchlistInput,
 } from "@/lib/storage/watchlist";
 import { useLocalStorageSync } from "./useLocalStorageSync";
 
+export interface ToggleInput {
+  id: number;
+  type: "movie" | "tv";
+  title: string;
+  posterPath: string | null;
+}
+
 export interface UseWatchlistResult {
   list: WatchlistItem[];
-  isInWatchlist: (input: WatchlistKeyInput) => boolean;
-  toggle: (input: WatchlistInput) => void;
-  add: (input: WatchlistInput) => void;
-  remove: (input: WatchlistKeyInput) => void;
+  isInWatchlist: (input: { id: number; type: "movie" | "tv" }) => boolean;
+  toggle: (input: ToggleInput) => void;
+  add: (input: ToggleInput) => void;
+  remove: (input: { id: number; type: "movie" | "tv" }) => void;
 }
 
 export function useWatchlist(): UseWatchlistResult {
@@ -31,7 +36,7 @@ export function useWatchlist(): UseWatchlistResult {
   );
 
   const has = useCallback(
-    (input: WatchlistKeyInput) => {
+    (input: { id: number; type: "movie" | "tv" }) => {
       const key = makeWatchlistKey(input);
       return list.some((item) => makeWatchlistKey(item) === key);
     },
@@ -39,7 +44,7 @@ export function useWatchlist(): UseWatchlistResult {
   );
 
   const add = useCallback(
-    (input: WatchlistInput) => {
+    (input: ToggleInput) => {
       addToWatchlist(input);
       refresh();
     },
@@ -47,7 +52,7 @@ export function useWatchlist(): UseWatchlistResult {
   );
 
   const remove = useCallback(
-    (input: WatchlistKeyInput) => {
+    (input: { id: number; type: "movie" | "tv" }) => {
       removeFromWatchlist(input);
       refresh();
     },
@@ -55,12 +60,8 @@ export function useWatchlist(): UseWatchlistResult {
   );
 
   const toggle = useCallback(
-    (input: WatchlistInput) => {
-      const keyInput: WatchlistKeyInput =
-        input.type === "anime"
-          ? { type: "anime", anilistId: input.anilistId }
-          : { type: input.type, id: input.id };
-      if (has(keyInput)) remove(keyInput);
+    (input: ToggleInput) => {
+      if (has(input)) remove(input);
       else add(input);
     },
     [has, add, remove],

@@ -67,53 +67,12 @@ describe("history storage", () => {
     }
     const list = readHistory();
     expect(list).toHaveLength(HISTORY_MAX_ITEMS);
-    const first = list[0];
-    if (first.type !== "movie") throw new Error("expected movie");
-    expect(first.id).toBe(HISTORY_MAX_ITEMS + 4);
+    expect(list[0].id).toBe(HISTORY_MAX_ITEMS + 4);
   });
 
   it("clearHistory empties the list", () => {
     recordHistory({ id: 1, type: "movie", title: "A", posterPath: null });
     clearHistory();
     expect(readHistory()).toEqual([]);
-  });
-
-  it("records an anime episode entry", () => {
-    recordHistory({
-      type: "anime",
-      anilistId: 21,
-      title: "One Piece",
-      coverUrl: "https://s4.anilist.co/file/anilistcdn/p.jpg",
-      episode: 1100,
-      format: "TV",
-    });
-    const list = readHistory();
-    expect(list).toHaveLength(1);
-    const entry = list[0];
-    if (entry.type !== "anime") throw new Error("expected anime");
-    expect(entry.anilistId).toBe(21);
-    expect(entry.episode).toBe(1100);
-    expect(entry.coverUrl).toContain("anilistcdn");
-    expect(entry.watchedAt).toBeTypeOf("number");
-  });
-
-  it("treats different anime episodes of the same series as separate entries", () => {
-    recordHistory({
-      type: "anime",
-      anilistId: 21,
-      title: "One Piece",
-      coverUrl: null,
-      episode: 1099,
-      format: "TV",
-    });
-    recordHistory({
-      type: "anime",
-      anilistId: 21,
-      title: "One Piece",
-      coverUrl: null,
-      episode: 1100,
-      format: "TV",
-    });
-    expect(readHistory()).toHaveLength(2);
   });
 });

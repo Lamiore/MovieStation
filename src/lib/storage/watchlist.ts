@@ -2,8 +2,6 @@ import {
   STORAGE_KEYS,
   makeWatchlistKey,
   type WatchlistItem,
-  type WatchlistKeyInput,
-  type AnimeStorageFormat,
 } from "./schema";
 
 function safeRead(): WatchlistItem[] {
@@ -26,7 +24,7 @@ function safeWrite(list: WatchlistItem[]): void {
       JSON.stringify(list),
     );
   } catch {
-    // quota / serialization errors — ignored.
+    // quota / serialization errors — ignored; hook detects via storage event.
   }
 }
 
@@ -34,46 +32,37 @@ export function readWatchlist(): WatchlistItem[] {
   return safeRead();
 }
 
-export type WatchlistInput =
-  | { type: "movie"; id: number; title: string; posterPath: string | null }
-  | { type: "tv"; id: number; title: string; posterPath: string | null }
-  | {
-      type: "anime";
-      anilistId: number;
-      title: string;
-      coverUrl: string | null;
-      format: AnimeStorageFormat;
-    };
-
-function toKeyInput(input: WatchlistInput | WatchlistKeyInput): WatchlistKeyInput {
-  if (input.type === "anime") {
-    return { type: "anime", anilistId: input.anilistId };
-  }
-  return { type: input.type, id: input.id };
-}
-
-function entryKey(item: WatchlistItem): string {
-  return makeWatchlistKey(item);
+export interface WatchlistInput {
+  id: number;
+  type: "movie" | "tv";
+  title: string;
+  posterPath: string | null;
 }
 
 export function addToWatchlist(input: WatchlistInput): void {
   const list = safeRead();
-  const key = makeWatchlistKey(toKeyInput(input));
-  if (list.some((item) => entryKey(item) === key)) return;
+  const key = makeWatchlistKey(input);
+  if (list.some((item) => makeWatchlistKey(item) === key)) return;
   const next: WatchlistItem[] = [
-    { ...input, addedAt: Date.now() } as WatchlistItem,
+    { ...input, addedAt: Date.now() },
     ...list,
   ];
   safeWrite(next);
 }
 
-export function removeFromWatchlist(input: WatchlistKeyInput): void {
+export function removeFromWatchlist(input: {
+  id: number;
+  type: "movie" | "tv";
+}): void {
   const list = safeRead();
   const key = makeWatchlistKey(input);
-  safeWrite(list.filter((item) => entryKey(item) !== key));
+  safeWrite(list.filter((item) => makeWatchlistKey(item) !== key));
 }
 
-export function isInWatchlist(input: WatchlistKeyInput): boolean {
+export function isInWatchlist(input: {
+  id: number;
+  type: "movie" | "tv";
+}): boolean {
   const key = makeWatchlistKey(input);
-  return safeRead().some((item) => entryKey(item) === key);
+  return safeRead().some((item) => makeWatchlistKey(item) === key);
 }

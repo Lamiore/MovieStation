@@ -3,8 +3,6 @@ import {
   STORAGE_KEYS,
   makeHistoryKey,
   type HistoryItem,
-  type HistoryKeyInput,
-  type AnimeStorageFormat,
 } from "./schema";
 
 function safeRead(): HistoryItem[] {
@@ -32,48 +30,21 @@ export function readHistory(): HistoryItem[] {
   return safeRead();
 }
 
-export type RecordHistoryInput =
-  | { type: "movie"; id: number; title: string; posterPath: string | null }
-  | {
-      type: "tv";
-      id: number;
-      title: string;
-      posterPath: string | null;
-      season: number;
-      episode: number;
-    }
-  | {
-      type: "anime";
-      anilistId: number;
-      title: string;
-      coverUrl: string | null;
-      episode: number;
-      format: AnimeStorageFormat;
-    };
-
-function toHistoryKey(input: RecordHistoryInput): HistoryKeyInput {
-  if (input.type === "movie") return { type: "movie", id: input.id };
-  if (input.type === "tv") {
-    return {
-      type: "tv",
-      id: input.id,
-      season: input.season,
-      episode: input.episode,
-    };
-  }
-  return { type: "anime", anilistId: input.anilistId, episode: input.episode };
-}
-
-function entryKey(item: HistoryItem): string {
-  return makeHistoryKey(item);
+export interface RecordHistoryInput {
+  id: number;
+  type: "movie" | "tv";
+  title: string;
+  posterPath: string | null;
+  season?: number;
+  episode?: number;
 }
 
 export function recordHistory(input: RecordHistoryInput): void {
   const list = safeRead();
-  const key = makeHistoryKey(toHistoryKey(input));
-  const filtered = list.filter((item) => entryKey(item) !== key);
+  const key = makeHistoryKey(input);
+  const filtered = list.filter((item) => makeHistoryKey(item) !== key);
   const next: HistoryItem[] = [
-    { ...input, watchedAt: Date.now() } as HistoryItem,
+    { ...input, watchedAt: Date.now() },
     ...filtered,
   ].slice(0, HISTORY_MAX_ITEMS);
   safeWrite(next);

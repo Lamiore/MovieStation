@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useWatchlist } from "@/hooks/useWatchlist";
-import { WatchlistTabs } from "@/components/personal/WatchlistTabs";
+import { MediaCard } from "@/components/media/MediaCard";
 
 export default function WatchlistPage() {
   const { list } = useWatchlist();
@@ -33,7 +33,20 @@ export default function WatchlistPage() {
           </Link>
         </div>
       ) : (
-        <WatchlistTabs list={list} />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {list.map((item) => (
+            <div key={`${item.type}:${item.id}`} className="w-full">
+              <MediaCard
+                id={item.id}
+                type={item.type}
+                title={item.title}
+                posterPath={item.posterPath}
+                releaseDate=""
+                voteAverage={0}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </main>
   );
