@@ -6,6 +6,7 @@ import {
   getMovieVideos,
   getMovieSimilar,
 } from "@/lib/tmdb/movies";
+import { formatRuntime } from "@/lib/format/runtime";
 import { DetailHero } from "@/components/detail/DetailHero";
 import { CastList } from "@/components/detail/CastList";
 import { TrailerModal } from "@/components/detail/TrailerModal";
@@ -14,13 +15,6 @@ import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 
 export const dynamic = "force-dynamic";
-
-function formatRuntime(min: number | null): string {
-  if (!min) return "";
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  return h > 0 ? `${h}h ${m}m` : `${m}m`;
-}
 
 export default async function MovieDetailPage({
   params,
