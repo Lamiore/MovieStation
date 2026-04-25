@@ -88,7 +88,7 @@ export default function WatchAnimePage({
             title,
             coverUrl: anime.coverImage.large,
             episode,
-            format: (anime.format as "TV" | "MOVIE" | "OVA" | "ONA" | "SPECIAL") ?? "TV",
+            format: anime.format ?? "TV",
           }}
         />
       ) : null}

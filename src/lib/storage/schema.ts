@@ -1,17 +1,12 @@
+import type { AnilistMediaFormat } from "@/lib/anilist/types";
+
 export const STORAGE_KEYS = {
   watchlist: "nonton:watchlist",
   history: "nonton:history",
   language: "nonton:language",
 } as const;
 
-export type AnimeStorageFormat =
-  | "TV"
-  | "TV_SHORT"
-  | "MOVIE"
-  | "SPECIAL"
-  | "OVA"
-  | "ONA"
-  | "MUSIC";
+export type AnimeStorageFormat = AnilistMediaFormat;
 
 export type WatchlistItem =
   | {
