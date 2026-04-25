@@ -71,3 +71,54 @@ describe("tv endpoints", () => {
     expect(result.results[0].name).toBe("Game of Thrones");
   });
 });
+
+describe("tv detail endpoints", () => {
+  const originalFetch = global.fetch;
+  const originalEnv = process.env.TMDB_READ_TOKEN;
+
+  beforeEach(() => {
+    process.env.TMDB_READ_TOKEN = "test-token";
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    process.env.TMDB_READ_TOKEN = originalEnv;
+    vi.resetModules();
+  });
+
+  it("getTvDetail calls /tv/:id", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ id: 1399, name: "GoT", genres: [], seasons: [] }), { status: 200 }));
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { getTvDetail } = await import("@/lib/tmdb/tv");
+    await getTvDetail(1399);
+
+    expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399");
+  });
+
+  it("getTvCredits calls /tv/:id/credits", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ id: 1399, cast: [], crew: [] }), { status: 200 }));
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { getTvCredits } = await import("@/lib/tmdb/tv");
+    await getTvCredits(1399);
+
+    expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399/credits");
+  });
+
+  it("getSeasonDetail calls /tv/:tvId/season/:seasonNumber", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ id: 1, season_number: 1, episodes: [] }), { status: 200 }));
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { getSeasonDetail } = await import("@/lib/tmdb/tv");
+    await getSeasonDetail(1399, 1);
+
+    expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399/season/1");
+  });
+});
