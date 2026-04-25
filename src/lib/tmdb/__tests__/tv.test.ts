@@ -121,6 +121,23 @@ describe("tv detail endpoints", () => {
 
     expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399/season/1");
   });
+
+  it("getTvSimilar calls /tv/:id/similar", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({ page: 1, results: [], total_pages: 0, total_results: 0 }),
+          { status: 200 },
+        ),
+      );
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { getTvSimilar } = await import("@/lib/tmdb/tv");
+    await getTvSimilar(1399);
+
+    expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399/similar");
+  });
 });
 
 describe("discoverTv", () => {

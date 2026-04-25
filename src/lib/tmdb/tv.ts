@@ -48,6 +48,15 @@ export function getTvCredits(
   return tmdbFetch<TmdbCredits>(`/tv/${id}/credits`, { locale: options.locale });
 }
 
+export function getTvSimilar(
+  id: number,
+  options: TvDetailOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbTvShow>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbTvShow>>(`/tv/${id}/similar`, {
+    locale: options.locale,
+  });
+}
+
 export function getTvVideos(
   id: number,
   options: TvDetailOptions = {},
