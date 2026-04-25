@@ -4,7 +4,6 @@ import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/browse", label: "Browse" },
   { href: "/watchlist", label: "Watchlist" },
   { href: "/history", label: "History" },
 ];

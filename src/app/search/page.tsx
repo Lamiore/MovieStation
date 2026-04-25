@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { multiSearch, type TmdbMultiResult } from "@/lib/tmdb/search";
 import { MediaCard } from "@/components/media/MediaCard";
 
@@ -51,12 +50,6 @@ export default async function SearchPage({
           <p className="text-sm text-muted-foreground">
             No results for &ldquo;{query}&rdquo;.
           </p>
-          <Link
-            href="/browse"
-            className="mt-4 inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-          >
-            Try Browse
-          </Link>
         </div>
       ) : null}
 

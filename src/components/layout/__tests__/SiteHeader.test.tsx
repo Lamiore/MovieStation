@@ -10,7 +10,7 @@ vi.mock("next/navigation", () => ({
 import { SiteHeader } from "@/components/layout/SiteHeader";
 
 describe("SiteHeader", () => {
-  it("renders logo link to home and the four nav links", () => {
+  it("renders logo link to home and the three nav links", () => {
     render(<SiteHeader />);
 
     expect(screen.getByRole("link", { name: /bauni/i })).toHaveAttribute(
@@ -20,10 +20,6 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: /^home$/i })).toHaveAttribute(
       "href",
       "/",
-    );
-    expect(screen.getByRole("link", { name: /browse/i })).toHaveAttribute(
-      "href",
-      "/browse",
     );
     expect(screen.getByRole("link", { name: /watchlist/i })).toHaveAttribute(
       "href",
