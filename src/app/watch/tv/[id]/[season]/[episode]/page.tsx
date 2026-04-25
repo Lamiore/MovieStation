@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getTvDetail, getSeasonDetail } from "@/lib/tmdb/tv";
 import { VidkingPlayer } from "@/components/player/VidkingPlayer";
+import { WatchTracker } from "@/components/player/WatchTracker";
 import { buildEmbedUrl } from "@/lib/vidking/buildEmbedUrl";
 import { EpisodeList } from "@/components/tv/EpisodeList";
 
@@ -79,6 +80,17 @@ export default async function WatchTvEpisodePage({
       <VidkingPlayer
         src={src}
         title={`${detail.name} S${seasonNumber}E${episodeNumber}`}
+      />
+
+      <WatchTracker
+        payload={{
+          id: detail.id,
+          type: "tv",
+          title: detail.name,
+          posterPath: detail.poster_path,
+          season: seasonNumber,
+          episode: episodeNumber,
+        }}
       />
 
       <div className="flex flex-wrap items-center gap-3">

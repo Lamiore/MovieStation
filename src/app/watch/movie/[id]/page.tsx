@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { getMovieDetail } from "@/lib/tmdb/movies";
 import { VidkingPlayer } from "@/components/player/VidkingPlayer";
+import { WatchTracker } from "@/components/player/WatchTracker";
 import { buildEmbedUrl } from "@/lib/vidking/buildEmbedUrl";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +48,15 @@ export default async function WatchMoviePage({
       </h1>
 
       <VidkingPlayer src={src} title={`${detail.title} (${year})`} />
+
+      <WatchTracker
+        payload={{
+          id: detail.id,
+          type: "movie",
+          title: detail.title,
+          posterPath: detail.poster_path,
+        }}
+      />
 
       {detail.overview ? (
         <p className="max-w-3xl text-sm text-text/80">{detail.overview}</p>
