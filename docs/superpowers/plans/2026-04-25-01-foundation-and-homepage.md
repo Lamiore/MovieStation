@@ -1144,7 +1144,10 @@ import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 import { MediaCardSkeleton } from "@/components/media/MediaCardSkeleton";
 
-export const revalidate = 3600;
+// Skip static prerender so `npm run build` doesn't require a valid
+// TMDB token at build time. ISR / static caching can be reintroduced
+// in a later plan once the token flow is stable.
+export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
