@@ -1,9 +1,9 @@
-export interface VidkingPlayerProps {
+export interface EmbedPlayerProps {
   src: string;
   title: string;
 }
 
-export function VidkingPlayer({ src, title }: VidkingPlayerProps) {
+export function EmbedPlayer({ src, title }: EmbedPlayerProps) {
   return (
     <div className="relative isolate ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen bg-black py-4 md:py-8">
       <div

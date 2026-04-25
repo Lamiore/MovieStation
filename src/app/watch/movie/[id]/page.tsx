@@ -6,12 +6,12 @@ import {
   getMovieCredits,
   getMovieSimilar,
 } from "@/lib/tmdb/movies";
-import { VidkingPlayer } from "@/components/player/VidkingPlayer";
+import { EmbedPlayer } from "@/components/player/EmbedPlayer";
 import { WatchTracker } from "@/components/player/WatchTracker";
 import { CastList } from "@/components/detail/CastList";
 import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
-import { buildEmbedUrl } from "@/lib/vidking/buildEmbedUrl";
+import { buildEmbedUrl } from "@/lib/embed/buildEmbedUrl";
 import { formatRuntime } from "@/lib/format/runtime";
 
 export const dynamic = "force-dynamic";
@@ -65,7 +65,7 @@ export default async function WatchMoviePage({
           ) : null}
         </h1>
 
-        <VidkingPlayer src={src} title={`${detail.title} (${year})`} />
+        <EmbedPlayer src={src} title={`${detail.title} (${year})`} />
 
         <WatchTracker
           payload={{
@@ -133,7 +133,7 @@ export default async function WatchMoviePage({
       ) : null}
 
       <p className="mx-auto max-w-screen-xl px-4 pt-6 text-xs text-muted-foreground md:px-8">
-        Streaming source from a third party (vidking.net). If the player
+        Streaming source from a third party (videasy.net). If the player
         fails to load, try refreshing or disabling your adblocker.
       </p>
     </main>

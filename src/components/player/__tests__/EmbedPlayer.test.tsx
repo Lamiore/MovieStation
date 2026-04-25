@@ -1,22 +1,22 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import { VidkingPlayer } from "@/components/player/VidkingPlayer";
+import { EmbedPlayer } from "@/components/player/EmbedPlayer";
 
-describe("VidkingPlayer", () => {
+describe("EmbedPlayer", () => {
   it("renders an iframe with the provided src", () => {
     const { container } = render(
-      <VidkingPlayer src="https://www.vidking.net/embed/movie/27205" title="Inception" />,
+      <EmbedPlayer src="https://player.videasy.net/movie/27205" title="Inception" />,
     );
     const iframe = container.querySelector("iframe");
     expect(iframe).not.toBeNull();
     expect(iframe!.getAttribute("src")).toBe(
-      "https://www.vidking.net/embed/movie/27205",
+      "https://player.videasy.net/movie/27205",
     );
   });
 
   it("sets title (for accessibility), allowFullScreen, and referrer-policy", () => {
     const { container } = render(
-      <VidkingPlayer src="https://example/embed/x" title="Some Title" />,
+      <EmbedPlayer src="https://example/embed/x" title="Some Title" />,
     );
     const iframe = container.querySelector("iframe")!;
     expect(iframe.getAttribute("title")).toBe("Some Title");
