@@ -169,3 +169,40 @@ describe("movie detail endpoints", () => {
     expect(fetchMock.mock.calls[0][0]).toContain("/movie/27205/similar");
   });
 });
+
+describe("discoverMovies", () => {
+  const originalFetch = global.fetch;
+  const originalEnv = process.env.TMDB_READ_TOKEN;
+
+  beforeEach(() => {
+    process.env.TMDB_READ_TOKEN = "test-token";
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    process.env.TMDB_READ_TOKEN = originalEnv;
+    vi.resetModules();
+  });
+
+  it("calls /discover/movie and forwards filter params", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ page: 1, results: [], total_pages: 0, total_results: 0 }), { status: 200 }));
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { discoverMovies } = await import("@/lib/tmdb/movies");
+    await discoverMovies({
+      genres: [28, 12],
+      year: 2024,
+      minRating: 7,
+      sortBy: "vote_average.desc",
+    });
+
+    const url = new URL(fetchMock.mock.calls[0][0] as string);
+    expect(url.pathname).toBe("/3/discover/movie");
+    expect(url.searchParams.get("with_genres")).toBe("28,12");
+    expect(url.searchParams.get("primary_release_year")).toBe("2024");
+    expect(url.searchParams.get("vote_average.gte")).toBe("7");
+    expect(url.searchParams.get("sort_by")).toBe("vote_average.desc");
+  });
+});

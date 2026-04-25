@@ -56,3 +56,27 @@ export function getSeasonDetail(
     locale: options.locale,
   });
 }
+
+export interface DiscoverTvOptions {
+  locale?: TmdbLocale;
+  genres?: number[];
+  year?: number;
+  minRating?: number;
+  sortBy?: string;
+  page?: number;
+}
+
+export function discoverTv(
+  options: DiscoverTvOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbTvShow>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbTvShow>>("/discover/tv", {
+    locale: options.locale,
+    searchParams: {
+      with_genres: options.genres?.length ? options.genres.join(",") : undefined,
+      first_air_date_year: options.year,
+      "vote_average.gte": options.minRating,
+      sort_by: options.sortBy,
+      page: options.page,
+    },
+  });
+}

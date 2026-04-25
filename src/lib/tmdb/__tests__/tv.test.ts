@@ -122,3 +122,33 @@ describe("tv detail endpoints", () => {
     expect(fetchMock.mock.calls[0][0]).toContain("/tv/1399/season/1");
   });
 });
+
+describe("discoverTv", () => {
+  const originalFetch = global.fetch;
+  const originalEnv = process.env.TMDB_READ_TOKEN;
+
+  beforeEach(() => {
+    process.env.TMDB_READ_TOKEN = "test-token";
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    process.env.TMDB_READ_TOKEN = originalEnv;
+    vi.resetModules();
+  });
+
+  it("calls /discover/tv with first_air_date_year", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ page: 1, results: [], total_pages: 0, total_results: 0 }), { status: 200 }));
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const { discoverTv } = await import("@/lib/tmdb/tv");
+    await discoverTv({ year: 2023, sortBy: "popularity.desc" });
+
+    const url = new URL(fetchMock.mock.calls[0][0] as string);
+    expect(url.pathname).toBe("/3/discover/tv");
+    expect(url.searchParams.get("first_air_date_year")).toBe("2023");
+    expect(url.searchParams.get("sort_by")).toBe("popularity.desc");
+  });
+});

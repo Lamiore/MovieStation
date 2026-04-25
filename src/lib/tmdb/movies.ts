@@ -92,3 +92,27 @@ export function getMovieSimilar(
     locale: options.locale,
   });
 }
+
+export interface DiscoverMoviesOptions {
+  locale?: TmdbLocale;
+  genres?: number[];
+  year?: number;
+  minRating?: number;
+  sortBy?: string;
+  page?: number;
+}
+
+export function discoverMovies(
+  options: DiscoverMoviesOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/discover/movie", {
+    locale: options.locale,
+    searchParams: {
+      with_genres: options.genres?.length ? options.genres.join(",") : undefined,
+      primary_release_year: options.year,
+      "vote_average.gte": options.minRating,
+      sort_by: options.sortBy,
+      page: options.page,
+    },
+  });
+}
