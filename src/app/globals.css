@@ -152,6 +152,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  overflow-x: clip;
 }
 
 /* Hero carousel animations. Ken Burns slow zoom on the active backdrop

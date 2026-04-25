@@ -1,4 +1,5 @@
 const BASE_URL = "https://www.vidking.net/embed";
+const PLAYER_QUERY = "?color=e50914";
 
 export type BuildEmbedUrlInput =
   | { type: "movie"; id: number }
@@ -6,7 +7,7 @@ export type BuildEmbedUrlInput =
 
 export function buildEmbedUrl(input: BuildEmbedUrlInput): string {
   if (input.type === "movie") {
-    return `${BASE_URL}/movie/${input.id}`;
+    return `${BASE_URL}/movie/${input.id}${PLAYER_QUERY}`;
   }
   if (
     typeof input.season !== "number" ||
@@ -14,5 +15,5 @@ export function buildEmbedUrl(input: BuildEmbedUrlInput): string {
   ) {
     throw new Error("buildEmbedUrl: tv requires both season and episode");
   }
-  return `${BASE_URL}/tv/${input.id}/${input.season}/${input.episode}`;
+  return `${BASE_URL}/tv/${input.id}/${input.season}/${input.episode}${PLAYER_QUERY}`;
 }

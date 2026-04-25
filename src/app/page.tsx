@@ -5,6 +5,7 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
   getNowPlayingMovies,
+  getMovieVideos,
 } from "@/lib/tmdb/movies";
 import { getPopularTv } from "@/lib/tmdb/tv";
 import { MediaCard } from "@/components/media/MediaCard";
@@ -54,16 +55,29 @@ export default function HomePage() {
 
 async function Hero() {
   const { results } = await getTrendingMovies();
-  const items = results
-    .filter((m) => m.backdrop_path)
-    .slice(0, 5)
-    .map((m) => ({
+  const top5 = results.filter((m) => m.backdrop_path).slice(0, 5);
+
+  const videoResponses = await Promise.all(
+    top5.map((m) => getMovieVideos(m.id).catch(() => null)),
+  );
+
+  const items = top5.map((m, i) => {
+    const youtube = (videoResponses[i]?.results ?? []).filter(
+      (v) => v.site === "YouTube",
+    );
+    const trailer =
+      youtube.find((v) => v.type === "Trailer") ??
+      youtube.find((v) => v.type === "Teaser");
+    return {
       id: m.id,
       type: "movie" as const,
       title: m.title,
       overview: m.overview,
       backdropPath: m.backdrop_path,
-    }));
+      trailerKey: trailer?.key,
+    };
+  });
+
   if (items.length === 0) return null;
   return <HeroBanner items={items} />;
 }

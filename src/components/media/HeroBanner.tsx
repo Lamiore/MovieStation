@@ -14,6 +14,10 @@ export interface HeroItem {
   title: string;
   overview: string;
   backdropPath: string | null;
+  /** YouTube video key when a trailer/teaser exists. When set, the
+   *  active slide plays the trailer muted/looped instead of running
+   *  the Ken Burns zoom on the backdrop. */
+  trailerKey?: string;
 }
 
 export interface HeroBannerProps {
@@ -47,9 +51,13 @@ export function HeroBanner({ items }: HeroBannerProps) {
       aria-roledescription="carousel"
       aria-label="Trending"
     >
-      {/* Stacked backdrops, cross-fade. Active one runs Ken Burns. */}
+      {/* Stacked backdrops, cross-fade. Active one either plays the
+          trailer (when a YouTube key exists) or runs Ken Burns on the
+          backdrop image. The image stays mounted as a poster fallback
+          so there's never a black flash while the iframe loads. */}
       {items.map((item, i) => {
         const active = i === index;
+        const showTrailer = active && Boolean(item.trailerKey);
         return (
           <div
             key={item.id}
@@ -60,8 +68,12 @@ export function HeroBanner({ items }: HeroBannerProps) {
           >
             {item.backdropPath ? (
               <div
-                key={`${item.id}-${active ? "on" : "off"}`}
-                className={active ? "absolute inset-0 hero-zoom" : "absolute inset-0"}
+                key={`${item.id}-${active && !showTrailer ? "zoom" : "still"}`}
+                className={
+                  active && !showTrailer
+                    ? "absolute inset-0 hero-zoom"
+                    : "absolute inset-0"
+                }
               >
                 <Image
                   src={BACKDROP_BASE + item.backdropPath}
@@ -75,6 +87,18 @@ export function HeroBanner({ items }: HeroBannerProps) {
             ) : (
               <div className="absolute inset-0 bg-surface" />
             )}
+
+            {showTrailer ? (
+              <iframe
+                key={`trailer-${item.id}`}
+                src={`https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&loop=1&playlist=${item.trailerKey}`}
+                title=""
+                aria-hidden
+                tabIndex={-1}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[170%] w-[170%] -translate-x-1/2 -translate-y-1/2 border-0"
+              />
+            ) : null}
           </div>
         );
       })}
