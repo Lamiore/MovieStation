@@ -7,6 +7,7 @@ import type {
   TmdbSeasonDetail,
   TmdbTvDetail,
   TmdbTvShow,
+  TmdbVideosResponse,
 } from "./types";
 
 export interface GetTvListOptions {
@@ -45,6 +46,15 @@ export function getTvCredits(
   options: TvDetailOptions = {},
 ): Promise<TmdbCredits> {
   return tmdbFetch<TmdbCredits>(`/tv/${id}/credits`, { locale: options.locale });
+}
+
+export function getTvVideos(
+  id: number,
+  options: TvDetailOptions = {},
+): Promise<TmdbVideosResponse> {
+  return tmdbFetch<TmdbVideosResponse>(`/tv/${id}/videos`, {
+    locale: options.locale,
+  });
 }
 
 export function getSeasonDetail(
