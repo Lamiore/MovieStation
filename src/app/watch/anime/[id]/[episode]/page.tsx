@@ -7,10 +7,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EmbedPlayer } from "@/components/player/EmbedPlayer";
 import { WatchTracker } from "@/components/player/WatchTracker";
 import { DubToggle } from "@/components/anime/DubToggle";
+import { ProviderToggle } from "@/components/anime/ProviderToggle";
 import { AnimeEpisodeList } from "@/components/anime/AnimeEpisodeList";
 import { AnimeCharacterList } from "@/components/anime/AnimeCharacterList";
 import { AnimeRelations } from "@/components/anime/AnimeRelations";
-import { buildEmbedUrl } from "@/lib/embed/buildEmbedUrl";
+import {
+  buildEmbedUrl,
+  type EmbedProvider,
+} from "@/lib/embed/buildEmbedUrl";
 import type { AnilistMediaDetail } from "@/lib/anilist/types";
 
 export default function WatchAnimePage({
@@ -28,6 +32,7 @@ export default function WatchAnimePage({
   const [anime, setAnime] = useState<AnilistMediaDetail | null>(null);
   const [error, setError] = useState(false);
   const [dub, setDub] = useState(false);
+  const [provider, setProvider] = useState<EmbedProvider>("vidsrc");
 
   useEffect(() => {
     let cancelled = false;
@@ -55,7 +60,13 @@ export default function WatchAnimePage({
         : 0;
   const isMovie = anime?.format === "MOVIE";
 
-  const src = buildEmbedUrl({ type: "anime", anilistId: id, episode, dub });
+  const src = buildEmbedUrl({
+    type: "anime",
+    anilistId: id,
+    episode,
+    dub,
+    provider,
+  });
 
   const prev = episode > 1 ? `/watch/anime/${id}/${episode - 1}` : null;
   const next =
@@ -66,12 +77,15 @@ export default function WatchAnimePage({
   return (
     <main className="min-h-dvh space-y-8 pb-12">
       <section className="mx-auto max-w-screen-2xl px-4 pt-4 md:px-8">
-        <div className="mb-3 flex items-center justify-between gap-4">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <h1 className="line-clamp-1 text-base font-semibold tracking-tight text-text md:text-lg">
             {title}
             {!isMovie ? ` — Episode ${episode}` : ""}
           </h1>
-          <DubToggle onChange={setDub} />
+          <div className="flex flex-wrap items-center gap-2">
+            <ProviderToggle onChange={setProvider} />
+            <DubToggle onChange={setDub} />
+          </div>
         </div>
       </section>
 
@@ -137,8 +151,8 @@ export default function WatchAnimePage({
       {anime ? <AnimeRelations edges={anime.relations.edges} /> : null}
 
       <p className="mx-auto max-w-screen-xl px-4 pt-6 text-xs text-muted-foreground md:px-8">
-        Streaming source from a third party (videasy.net). If the player fails
-        to load, try refreshing or disabling your adblocker.
+        Streaming source from a third party. If the player fails to load, try
+        switching the provider above, refreshing, or disabling your adblocker.
       </p>
     </main>
   );
