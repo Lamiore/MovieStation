@@ -86,7 +86,12 @@ export default async function TvDetailPage({
                 Tonton
               </Link>
             ) : null}
-            <WatchlistButton id={detail.id} type="tv" />
+            <WatchlistButton
+              id={detail.id}
+              type="tv"
+              title={detail.name}
+              posterPath={detail.poster_path}
+            />
           </>
         }
       />

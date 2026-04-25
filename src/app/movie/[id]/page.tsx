@@ -70,7 +70,12 @@ export default async function MovieDetailPage({
               Tonton
             </Link>
             <TrailerModal videos={videos.results} />
-            <WatchlistButton id={detail.id} type="movie" />
+            <WatchlistButton
+              id={detail.id}
+              type="movie"
+              title={detail.title}
+              posterPath={detail.poster_path}
+            />
           </>
         }
       />

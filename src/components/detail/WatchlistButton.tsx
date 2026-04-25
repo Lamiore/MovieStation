@@ -1,24 +1,30 @@
 "use client";
 
 import { Bookmark, BookmarkCheck } from "lucide-react";
+import { useWatchlist } from "@/hooks/useWatchlist";
 
 export interface WatchlistButtonProps {
   id: number;
   type: "movie" | "tv";
-  isInWatchlist?: boolean;
-  onToggle?: () => void;
+  title: string;
+  posterPath: string | null;
 }
 
 export function WatchlistButton({
-  isInWatchlist = false,
-  onToggle,
+  id,
+  type,
+  title,
+  posterPath,
 }: WatchlistButtonProps) {
-  const Icon = isInWatchlist ? BookmarkCheck : Bookmark;
-  const label = isInWatchlist ? "Sudah di Watchlist" : "Tambah ke Watchlist";
+  const { isInWatchlist, toggle } = useWatchlist();
+  const inList = isInWatchlist({ id, type });
+  const Icon = inList ? BookmarkCheck : Bookmark;
+  const label = inList ? "Sudah di Watchlist" : "Tambah ke Watchlist";
+
   return (
     <button
       type="button"
-      onClick={onToggle}
+      onClick={() => toggle({ id, type, title, posterPath })}
       className="inline-flex items-center gap-2 rounded-md bg-elevated px-4 py-2 text-sm font-semibold text-text ring-1 ring-border transition-colors hover:bg-elevated/80"
     >
       <Icon className="h-4 w-4" />

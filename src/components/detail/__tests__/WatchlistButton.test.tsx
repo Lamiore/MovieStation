@@ -1,32 +1,58 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WatchlistButton } from "@/components/detail/WatchlistButton";
 
+const SAMPLE = {
+  id: 27205,
+  type: "movie" as const,
+  title: "Inception",
+  posterPath: "/p.jpg",
+};
+
 describe("WatchlistButton", () => {
-  it("shows 'Tambah ke Watchlist' when not in watchlist", () => {
-    render(<WatchlistButton id={1} type="movie" />);
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
+  it("starts as 'Tambah ke Watchlist' when nothing in storage", () => {
+    render(<WatchlistButton {...SAMPLE} />);
     expect(
       screen.getByRole("button", { name: /tambah ke watchlist/i }),
     ).toBeInTheDocument();
   });
 
-  it("shows 'Sudah di Watchlist' when already in watchlist", () => {
-    render(<WatchlistButton id={1} type="movie" isInWatchlist />);
+  it("clicking once writes to localStorage and updates label", async () => {
+    render(<WatchlistButton {...SAMPLE} />);
+    await userEvent.click(screen.getByRole("button"));
+
     expect(
       screen.getByRole("button", { name: /sudah di watchlist/i }),
     ).toBeInTheDocument();
+
+    const stored = JSON.parse(window.localStorage.getItem("nonton:watchlist")!);
+    expect(stored).toHaveLength(1);
+    expect(stored[0].id).toBe(27205);
   });
 
-  it("calls onToggle when clicked", async () => {
-    const onToggle = vi.fn();
-    render(<WatchlistButton id={42} type="tv" onToggle={onToggle} />);
+  it("clicking again removes the item", async () => {
+    render(<WatchlistButton {...SAMPLE} />);
     await userEvent.click(screen.getByRole("button"));
-    expect(onToggle).toHaveBeenCalledTimes(1);
+    await userEvent.click(screen.getByRole("button"));
+    expect(
+      screen.getByRole("button", { name: /tambah ke watchlist/i }),
+    ).toBeInTheDocument();
+    expect(window.localStorage.getItem("nonton:watchlist")).toBe("[]");
   });
 
-  it("does not crash when onToggle is omitted", async () => {
-    render(<WatchlistButton id={1} type="movie" />);
-    await userEvent.click(screen.getByRole("button"));
+  it("reads existing watchlist value on mount", () => {
+    window.localStorage.setItem(
+      "nonton:watchlist",
+      JSON.stringify([{ ...SAMPLE, addedAt: 1 }]),
+    );
+    render(<WatchlistButton {...SAMPLE} />);
+    expect(
+      screen.getByRole("button", { name: /sudah di watchlist/i }),
+    ).toBeInTheDocument();
   });
 });
