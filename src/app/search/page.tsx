@@ -4,6 +4,12 @@ import { MediaCard } from "@/components/media/MediaCard";
 
 export const dynamic = "force-dynamic";
 
+type WatchableResult = Exclude<TmdbMultiResult, { media_type: "person" }>;
+
+function isWatchable(r: TmdbMultiResult): r is WatchableResult {
+  return r.media_type === "movie" || r.media_type === "tv";
+}
+
 export default async function SearchPage({
   searchParams,
 }: {
@@ -12,13 +18,11 @@ export default async function SearchPage({
   const { q } = await searchParams;
   const query = q?.trim() ?? "";
 
-  let items: TmdbMultiResult[] = [];
+  let items: WatchableResult[] = [];
   if (query.length >= 2) {
     try {
       const data = await multiSearch(query);
-      items = data.results.filter(
-        (r) => r.media_type === "movie" || r.media_type === "tv",
-      );
+      items = data.results.filter(isWatchable);
     } catch {
       items = [];
     }
