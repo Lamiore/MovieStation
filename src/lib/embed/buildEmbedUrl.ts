@@ -1,7 +1,7 @@
 const VIDEASY_BASE = "https://player.videasy.net";
 const VIDEASY_QUERY = "?color=e50914&nextEpisode=true&episodeSelector=true";
 
-export type EmbedProvider = "videasy" | "2embed";
+export type EmbedProvider = "videasy" | "vidsrc" | "vidlink";
 
 export type BuildEmbedUrlInput =
   | { type: "movie"; id: number }
@@ -9,6 +9,7 @@ export type BuildEmbedUrlInput =
   | {
       type: "anime";
       anilistId: number;
+      malId?: number | null;
       episode: number;
       dub?: boolean;
       provider?: EmbedProvider;
@@ -32,16 +33,24 @@ export function buildEmbedUrl(input: BuildEmbedUrlInput): string {
 
 function buildAnimeUrl(input: {
   anilistId: number;
+  malId?: number | null;
   episode: number;
   dub?: boolean;
   provider?: EmbedProvider;
 }): string {
   const provider = input.provider ?? "videasy";
-  const { anilistId, episode, dub } = input;
+  const { anilistId, malId, episode, dub } = input;
 
-  if (provider === "2embed") {
-    const dubParam = dub ? "?dub=true" : "";
-    return `https://2embed.cc/embedanime/${anilistId}/${episode}${dubParam}`;
+  if (provider === "vidsrc") {
+    const dubFlag = dub ? "1" : "0";
+    return `https://vidsrc.icu/embed/anime/${anilistId}/${episode}/${dubFlag}`;
+  }
+  if (provider === "vidlink") {
+    if (typeof malId !== "number") {
+      throw new Error("buildEmbedUrl: vidlink requires malId");
+    }
+    const lang = dub ? "dub" : "sub";
+    return `https://vidlink.pro/anime/${malId}/${episode}/${lang}`;
   }
   // videasy (default)
   const dubParam = dub ? "&dub=true" : "";

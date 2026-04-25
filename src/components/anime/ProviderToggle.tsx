@@ -6,26 +6,34 @@ import type { EmbedProvider } from "@/lib/embed/buildEmbedUrl";
 const STORAGE_KEY = "nonton:animeProvider";
 const DEFAULT_PROVIDER: EmbedProvider = "videasy";
 
-const OPTIONS: { value: EmbedProvider; label: string }[] = [
+const ALL_OPTIONS: { value: EmbedProvider; label: string }[] = [
   { value: "videasy", label: "Videasy" },
-  { value: "2embed", label: "2embed" },
+  { value: "vidsrc", label: "Vidsrc" },
+  { value: "vidlink", label: "Vidlink" },
 ];
 
 function isProvider(value: string | null): value is EmbedProvider {
-  return value === "videasy" || value === "2embed";
+  return value === "videasy" || value === "vidsrc" || value === "vidlink";
 }
 
 export interface ProviderToggleProps {
   onChange: (provider: EmbedProvider) => void;
+  /** Hide vidlink option when MAL ID isn't available for this anime. */
+  hasMalId?: boolean;
 }
 
-export function ProviderToggle({ onChange }: ProviderToggleProps) {
+export function ProviderToggle({ onChange, hasMalId = true }: ProviderToggleProps) {
+  const OPTIONS = ALL_OPTIONS.filter(
+    (opt) => opt.value !== "vidlink" || hasMalId,
+  );
   const [provider, setProvider] = useState<EmbedProvider>(DEFAULT_PROVIDER);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    const initial = isProvider(stored) ? stored : DEFAULT_PROVIDER;
+    let initial = isProvider(stored) ? stored : DEFAULT_PROVIDER;
+    // If stored preference is vidlink but this anime has no MAL ID, fall back.
+    if (initial === "vidlink" && !hasMalId) initial = DEFAULT_PROVIDER;
     setProvider(initial);
     setHydrated(true);
     onChange(initial);

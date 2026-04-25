@@ -1,5 +1,6 @@
 const MEDIA_SUMMARY_FIELDS = `
   id
+  idMal
   title { romaji english native userPreferred }
   coverImage { large extraLarge color }
   bannerImage

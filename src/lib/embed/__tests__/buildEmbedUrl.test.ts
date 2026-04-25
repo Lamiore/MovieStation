@@ -23,7 +23,7 @@ describe("buildEmbedUrl", () => {
     );
   });
 
-  it("returns the anime embed URL with default sub for type=anime", () => {
+  it("returns the videasy anime URL by default with sub", () => {
     expect(
       buildEmbedUrl({ type: "anime", anilistId: 21, episode: 1 }),
     ).toBe(
@@ -31,7 +31,7 @@ describe("buildEmbedUrl", () => {
     );
   });
 
-  it("appends dub=true for type=anime when dub flag is on", () => {
+  it("appends &dub=true for videasy when dub is on", () => {
     expect(
       buildEmbedUrl({ type: "anime", anilistId: 21, episode: 1, dub: true }),
     ).toBe(
@@ -39,26 +39,62 @@ describe("buildEmbedUrl", () => {
     );
   });
 
-  it("returns the 2embed anime URL when provider=2embed", () => {
+  it("returns vidsrc.icu URL with sub flag 0 when provider=vidsrc", () => {
     expect(
       buildEmbedUrl({
         type: "anime",
         anilistId: 21,
         episode: 1,
-        provider: "2embed",
+        provider: "vidsrc",
       }),
-    ).toBe("https://2embed.cc/embedanime/21/1");
+    ).toBe("https://vidsrc.icu/embed/anime/21/1/0");
   });
 
-  it("appends ?dub=true for 2embed anime when dub is on", () => {
+  it("returns vidsrc.icu URL with dub flag 1 when provider=vidsrc and dub=true", () => {
     expect(
       buildEmbedUrl({
         type: "anime",
         anilistId: 21,
         episode: 1,
-        provider: "2embed",
+        provider: "vidsrc",
         dub: true,
       }),
-    ).toBe("https://2embed.cc/embedanime/21/1?dub=true");
+    ).toBe("https://vidsrc.icu/embed/anime/21/1/1");
+  });
+
+  it("returns vidlink.pro URL with sub when provider=vidlink", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        malId: 21,
+        episode: 1,
+        provider: "vidlink",
+      }),
+    ).toBe("https://vidlink.pro/anime/21/1/sub");
+  });
+
+  it("returns vidlink.pro URL with dub path when provider=vidlink and dub=true", () => {
+    expect(
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        malId: 21,
+        episode: 1,
+        provider: "vidlink",
+        dub: true,
+      }),
+    ).toBe("https://vidlink.pro/anime/21/1/dub");
+  });
+
+  it("throws when provider=vidlink but malId is missing", () => {
+    expect(() =>
+      buildEmbedUrl({
+        type: "anime",
+        anilistId: 21,
+        episode: 1,
+        provider: "vidlink",
+      }),
+    ).toThrow(/malId/);
   });
 });

@@ -60,12 +60,17 @@ export default function WatchAnimePage({
         : 0;
   const isMovie = anime?.format === "MOVIE";
 
+  const malId = anime?.idMal ?? null;
+  const hasMalId = malId != null;
+  const effectiveProvider =
+    provider === "vidlink" && !hasMalId ? "videasy" : provider;
   const src = buildEmbedUrl({
     type: "anime",
     anilistId: id,
+    malId,
     episode,
     dub,
-    provider,
+    provider: effectiveProvider,
   });
 
   const prev = episode > 1 ? `/watch/anime/${id}/${episode - 1}` : null;
@@ -83,7 +88,7 @@ export default function WatchAnimePage({
             {!isMovie ? ` — Episode ${episode}` : ""}
           </h1>
           <div className="flex flex-wrap items-center gap-2">
-            <ProviderToggle onChange={setProvider} />
+            <ProviderToggle onChange={setProvider} hasMalId={hasMalId} />
             <DubToggle onChange={setDub} />
           </div>
         </div>

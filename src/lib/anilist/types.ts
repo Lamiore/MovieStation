@@ -31,6 +31,7 @@ export interface AnilistCoverImage {
 
 export interface AnilistMediaSummary {
   id: number;
+  idMal: number | null;
   title: AnilistTitle;
   coverImage: AnilistCoverImage;
   bannerImage: string | null;
