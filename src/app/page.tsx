@@ -11,6 +11,7 @@ import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 import { MediaCardSkeleton } from "@/components/media/MediaCardSkeleton";
 import { HeroBanner } from "@/components/media/HeroBanner";
+import { ContinueWatchingRow } from "@/components/personal/ContinueWatchingRow";
 import type { TmdbMovie, TmdbPaginatedResponse, TmdbTvShow } from "@/lib/tmdb/types";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,8 @@ export default function HomePage() {
       <Suspense fallback={<HeroSkeleton />}>
         <Hero />
       </Suspense>
+
+      <ContinueWatchingRow />
 
       <Suspense fallback={<MovieRowSkeleton title="Trending Minggu Ini" />}>
         <MovieRow title="Trending Minggu Ini" fetcher={getTrendingMovies} />
