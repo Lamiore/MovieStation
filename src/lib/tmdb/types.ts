@@ -29,3 +29,22 @@ export interface TmdbErrorResponse {
   status_message: string;
   success: false;
 }
+
+export interface TmdbTvShow {
+  id: number;
+  name: string;
+  original_name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  first_air_date: string; // "YYYY-MM-DD"
+  vote_average: number;
+  genre_ids: number[];
+  adult: boolean;
+  original_language: string;
+  popularity: number;
+  origin_country: string[];
+  vote_count: number;
+}
+
+export type TmdbMediaType = "movie" | "tv";
