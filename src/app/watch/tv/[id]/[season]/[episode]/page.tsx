@@ -84,7 +84,7 @@ export default async function WatchTvEpisodePage({
       : null;
   const epRating =
     episode.vote_average > 0
-      ? `★ ${episode.vote_average.toFixed(1)}`
+      ? `★ ${episode.vote_average.toFixed(1)} (${episode.vote_count})`
       : null;
   const epRuntime = formatRuntime(episode.runtime);
 
@@ -124,8 +124,8 @@ export default async function WatchTvEpisodePage({
           }}
         />
 
-        <div className="grid gap-4 md:grid-cols-[300px_1fr]">
-          {episode.still_path ? (
+        {episode.still_path ? (
+          <div className="grid gap-4 md:grid-cols-[300px_1fr]">
             <div className="relative aspect-video overflow-hidden rounded-md bg-surface ring-1 ring-border">
               <Image
                 src={STILL_BASE + episode.still_path}
@@ -135,7 +135,20 @@ export default async function WatchTvEpisodePage({
                 className="object-cover"
               />
             </div>
-          ) : null}
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                {epRating ? (
+                  <span className="text-primary">{epRating}</span>
+                ) : null}
+                {epRuntime ? <span>{epRuntime}</span> : null}
+                {episode.air_date ? <span>{episode.air_date}</span> : null}
+              </div>
+              {episode.overview ? (
+                <p className="text-sm text-text/80">{episode.overview}</p>
+              ) : null}
+            </div>
+          </div>
+        ) : (
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
               {epRating ? (
@@ -148,7 +161,7 @@ export default async function WatchTvEpisodePage({
               <p className="text-sm text-text/80">{episode.overview}</p>
             ) : null}
           </div>
-        </div>
+        )}
 
         <div className="flex flex-wrap items-center gap-3">
           {prev ? (
