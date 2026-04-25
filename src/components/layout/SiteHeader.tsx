@@ -17,7 +17,7 @@ export function SiteHeader() {
           href="/"
           className="text-base font-bold tracking-tight text-text hover:text-primary md:text-lg"
         >
-          nontonfilm
+          Bauni
         </Link>
 
         <nav

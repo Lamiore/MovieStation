@@ -54,17 +54,18 @@ export default function HomePage() {
 
 async function Hero() {
   const { results } = await getTrendingMovies();
-  const top = results[0];
-  if (!top) return null;
-  return (
-    <HeroBanner
-      id={top.id}
-      type="movie"
-      title={top.title}
-      overview={top.overview}
-      backdropPath={top.backdrop_path}
-    />
-  );
+  const items = results
+    .filter((m) => m.backdrop_path)
+    .slice(0, 5)
+    .map((m) => ({
+      id: m.id,
+      type: "movie" as const,
+      title: m.title,
+      overview: m.overview,
+      backdropPath: m.backdrop_path,
+    }));
+  if (items.length === 0) return null;
+  return <HeroBanner items={items} />;
 }
 
 function HeroSkeleton() {

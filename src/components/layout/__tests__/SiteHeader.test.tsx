@@ -13,7 +13,7 @@ describe("SiteHeader", () => {
   it("renders logo link to home and the four nav links", () => {
     render(<SiteHeader />);
 
-    expect(screen.getByRole("link", { name: /nontonfilm/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /bauni/i })).toHaveAttribute(
       "href",
       "/",
     );

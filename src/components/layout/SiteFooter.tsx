@@ -15,7 +15,7 @@ export function SiteFooter() {
           .
         </p>
         <p>
-          nontonfilm tidak berafiliasi dengan TMDB atau penyedia streaming
+          Bauni tidak berafiliasi dengan TMDB atau penyedia streaming
           mana pun. Konten ditampilkan dari sumber pihak ketiga.
         </p>
       </div>

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nontonfilm",
+  title: "Bauni",
   description: "Katalog film & serial TV — tonton langsung di browser.",
 };
 
