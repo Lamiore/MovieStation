@@ -1,37 +1,85 @@
 import { Suspense } from "react";
-import { getTrendingMovies } from "@/lib/tmdb/movies";
+import {
+  getTrendingMovies,
+  getPopularMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+  getNowPlayingMovies,
+} from "@/lib/tmdb/movies";
+import { getPopularTv } from "@/lib/tmdb/tv";
 import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 import { MediaCardSkeleton } from "@/components/media/MediaCardSkeleton";
+import { HeroBanner } from "@/components/media/HeroBanner";
+import type { TmdbMovie, TmdbPaginatedResponse, TmdbTvShow } from "@/lib/tmdb/types";
 
-// Skip static prerender so `npm run build` doesn't require a valid
-// TMDB token at build time. ISR / static caching can be reintroduced
-// in a later plan once the token flow is stable.
 export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
-    <main className="min-h-dvh space-y-8 py-6 md:py-10">
-      <header className="px-4 md:px-8">
-        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-          nontonfilm
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Katalog film &amp; serial TV — tonton langsung di browser.
-        </p>
-      </header>
+    <main className="min-h-dvh space-y-10 pb-12">
+      <Suspense fallback={<HeroSkeleton />}>
+        <Hero />
+      </Suspense>
 
-      <Suspense fallback={<TrendingRowSkeleton />}>
-        <TrendingRow />
+      <Suspense fallback={<MovieRowSkeleton title="Trending Minggu Ini" />}>
+        <MovieRow title="Trending Minggu Ini" fetcher={getTrendingMovies} />
+      </Suspense>
+
+      <Suspense fallback={<MovieRowSkeleton title="Sedang Tayang" />}>
+        <MovieRow title="Sedang Tayang" fetcher={getNowPlayingMovies} />
+      </Suspense>
+
+      <Suspense fallback={<MovieRowSkeleton title="Populer" />}>
+        <MovieRow title="Populer" fetcher={getPopularMovies} />
+      </Suspense>
+
+      <Suspense fallback={<MovieRowSkeleton title="Akan Datang" />}>
+        <MovieRow title="Akan Datang" fetcher={getUpcomingMovies} />
+      </Suspense>
+
+      <Suspense fallback={<MovieRowSkeleton title="Rating Tertinggi" />}>
+        <MovieRow title="Rating Tertinggi" fetcher={getTopRatedMovies} />
+      </Suspense>
+
+      <Suspense fallback={<MovieRowSkeleton title="Serial TV Populer" />}>
+        <TvRow title="Serial TV Populer" fetcher={getPopularTv} />
       </Suspense>
     </main>
   );
 }
 
-async function TrendingRow() {
+async function Hero() {
   const { results } = await getTrendingMovies();
+  const top = results[0];
+  if (!top) return null;
   return (
-    <MediaRow title="Trending Minggu Ini">
+    <HeroBanner
+      id={top.id}
+      type="movie"
+      title={top.title}
+      overview={top.overview}
+      backdropPath={top.backdrop_path}
+    />
+  );
+}
+
+function HeroSkeleton() {
+  return (
+    <section className="relative h-[60vh] min-h-[420px] w-full animate-pulse bg-surface md:h-[70vh]" />
+  );
+}
+
+async function MovieRow({
+  title,
+  fetcher,
+}: {
+  title: string;
+  fetcher: () => Promise<TmdbPaginatedResponse<TmdbMovie>>;
+}) {
+  const { results } = await fetcher();
+  return (
+    <MediaRow title={title}>
       {results.slice(0, 20).map((m) => (
         <MediaCard
           key={m.id}
@@ -47,9 +95,34 @@ async function TrendingRow() {
   );
 }
 
-function TrendingRowSkeleton() {
+async function TvRow({
+  title,
+  fetcher,
+}: {
+  title: string;
+  fetcher: () => Promise<TmdbPaginatedResponse<TmdbTvShow>>;
+}) {
+  const { results } = await fetcher();
   return (
-    <MediaRow title="Trending Minggu Ini">
+    <MediaRow title={title}>
+      {results.slice(0, 20).map((tv) => (
+        <MediaCard
+          key={tv.id}
+          id={tv.id}
+          type="tv"
+          title={tv.name}
+          posterPath={tv.poster_path}
+          releaseDate={tv.first_air_date}
+          voteAverage={tv.vote_average}
+        />
+      ))}
+    </MediaRow>
+  );
+}
+
+function MovieRowSkeleton({ title }: { title: string }) {
+  return (
+    <MediaRow title={title}>
       {Array.from({ length: 8 }).map((_, i) => (
         <MediaCardSkeleton key={i} />
       ))}
