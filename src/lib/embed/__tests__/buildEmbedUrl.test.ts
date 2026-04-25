@@ -39,29 +39,6 @@ describe("buildEmbedUrl", () => {
     );
   });
 
-  it("returns the vidsrc.cc anime URL when provider=vidsrc", () => {
-    expect(
-      buildEmbedUrl({
-        type: "anime",
-        anilistId: 21,
-        episode: 1,
-        provider: "vidsrc",
-      }),
-    ).toBe("https://vidsrc.cc/v2/embed/anime/21/1");
-  });
-
-  it("appends ?dub=true for vidsrc anime when dub is on", () => {
-    expect(
-      buildEmbedUrl({
-        type: "anime",
-        anilistId: 21,
-        episode: 1,
-        provider: "vidsrc",
-        dub: true,
-      }),
-    ).toBe("https://vidsrc.cc/v2/embed/anime/21/1?dub=true");
-  });
-
   it("returns the 2embed anime URL when provider=2embed", () => {
     expect(
       buildEmbedUrl({

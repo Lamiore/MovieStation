@@ -4,16 +4,15 @@ import { useEffect, useState } from "react";
 import type { EmbedProvider } from "@/lib/embed/buildEmbedUrl";
 
 const STORAGE_KEY = "nonton:animeProvider";
-const DEFAULT_PROVIDER: EmbedProvider = "vidsrc";
+const DEFAULT_PROVIDER: EmbedProvider = "videasy";
 
 const OPTIONS: { value: EmbedProvider; label: string }[] = [
-  { value: "vidsrc", label: "Vidsrc" },
   { value: "videasy", label: "Videasy" },
   { value: "2embed", label: "2embed" },
 ];
 
 function isProvider(value: string | null): value is EmbedProvider {
-  return value === "videasy" || value === "vidsrc" || value === "2embed";
+  return value === "videasy" || value === "2embed";
 }
 
 export interface ProviderToggleProps {

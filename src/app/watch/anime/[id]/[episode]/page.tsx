@@ -32,7 +32,7 @@ export default function WatchAnimePage({
   const [anime, setAnime] = useState<AnilistMediaDetail | null>(null);
   const [error, setError] = useState(false);
   const [dub, setDub] = useState(false);
-  const [provider, setProvider] = useState<EmbedProvider>("vidsrc");
+  const [provider, setProvider] = useState<EmbedProvider>("videasy");
 
   useEffect(() => {
     let cancelled = false;

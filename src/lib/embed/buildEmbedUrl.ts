@@ -1,7 +1,7 @@
 const VIDEASY_BASE = "https://player.videasy.net";
 const VIDEASY_QUERY = "?color=e50914&nextEpisode=true&episodeSelector=true";
 
-export type EmbedProvider = "videasy" | "vidsrc" | "2embed";
+export type EmbedProvider = "videasy" | "2embed";
 
 export type BuildEmbedUrlInput =
   | { type: "movie"; id: number }
@@ -39,10 +39,6 @@ function buildAnimeUrl(input: {
   const provider = input.provider ?? "videasy";
   const { anilistId, episode, dub } = input;
 
-  if (provider === "vidsrc") {
-    const dubParam = dub ? "?dub=true" : "";
-    return `https://vidsrc.cc/v2/embed/anime/${anilistId}/${episode}${dubParam}`;
-  }
   if (provider === "2embed") {
     const dubParam = dub ? "?dub=true" : "";
     return `https://2embed.cc/embedanime/${anilistId}/${episode}${dubParam}`;
