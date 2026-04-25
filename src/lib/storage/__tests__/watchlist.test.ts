@@ -48,7 +48,9 @@ describe("watchlist storage", () => {
 
     const list = readWatchlist();
     expect(list).toHaveLength(1);
-    expect(list[0].id).toBe(2);
+    const first = list[0];
+    if (first.type === "anime") throw new Error("expected movie/tv");
+    expect(first.id).toBe(2);
   });
 
   it("isInWatchlist reflects add/remove", () => {
@@ -81,5 +83,35 @@ describe("watchlist storage", () => {
     } finally {
       globalThis.window = original;
     }
+  });
+
+  it("adds and detects an anime entry", () => {
+    addToWatchlist({
+      type: "anime",
+      anilistId: 21,
+      title: "One Piece",
+      coverUrl: null,
+      format: "TV",
+    });
+    expect(isInWatchlist({ type: "anime", anilistId: 21 })).toBe(true);
+    expect(readWatchlist()).toHaveLength(1);
+  });
+
+  it("does not duplicate an anime entry on second add", () => {
+    addToWatchlist({
+      type: "anime",
+      anilistId: 21,
+      title: "One Piece",
+      coverUrl: null,
+      format: "TV",
+    });
+    addToWatchlist({
+      type: "anime",
+      anilistId: 21,
+      title: "One Piece",
+      coverUrl: null,
+      format: "TV",
+    });
+    expect(readWatchlist()).toHaveLength(1);
   });
 });
