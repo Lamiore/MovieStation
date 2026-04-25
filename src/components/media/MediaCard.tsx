@@ -98,7 +98,7 @@ export function MediaCard({
             aria-hidden
             tabIndex={-1}
             allow="autoplay; encrypted-media; picture-in-picture"
-            className="card-preview pointer-events-none absolute left-1/2 top-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 border-0"
+            className="card-preview pointer-events-none absolute left-1/2 top-1/2 h-full w-auto -translate-x-1/2 -translate-y-1/2 border-0 [aspect-ratio:16/9]"
           />
         ) : null}
       </div>
