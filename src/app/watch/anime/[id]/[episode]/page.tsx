@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState, use } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,7 +25,6 @@ export default function WatchAnimePage({
     notFound();
   }
 
-  const router = useRouter();
   const [anime, setAnime] = useState<AnilistMediaDetail | null>(null);
   const [error, setError] = useState(false);
   const [dub, setDub] = useState(false);
