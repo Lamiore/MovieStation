@@ -1,15 +1,23 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), forward: vi.fn(), refresh: vi.fn(), prefetch: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/",
+}));
+
 import { SiteHeader } from "@/components/layout/SiteHeader";
 
 describe("SiteHeader", () => {
   it("renders logo link to home and the four nav links", () => {
     render(<SiteHeader />);
 
-    const logo = screen.getByRole("link", { name: /nontonfilm/i });
-    expect(logo).toHaveAttribute("href", "/");
-
-    expect(screen.getByRole("link", { name: /home/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /nontonfilm/i })).toHaveAttribute(
+      "href",
+      "/",
+    );
+    expect(screen.getByRole("link", { name: /^home$/i })).toHaveAttribute(
       "href",
       "/",
     );
@@ -27,9 +35,12 @@ describe("SiteHeader", () => {
     );
   });
 
-  it("renders a search link to /search", () => {
+  it("renders a search input (autocomplete) and a mobile search link", () => {
     render(<SiteHeader />);
-    const searchLink = screen.getByRole("link", { name: /search/i });
-    expect(searchLink).toHaveAttribute("href", "/search");
+    expect(screen.getByRole("searchbox")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /search/i })).toHaveAttribute(
+      "href",
+      "/search",
+    );
   });
 });
