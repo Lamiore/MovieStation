@@ -21,19 +21,19 @@ const buildVideo = (overrides: Partial<TmdbVideo> = {}): TmdbVideo => ({
 describe("TrailerModal", () => {
   it("renders an enabled button when a YouTube trailer exists", () => {
     render(<TrailerModal videos={[buildVideo()]} />);
-    const btn = screen.getByRole("button", { name: /putar trailer/i });
+    const btn = screen.getByRole("button", { name: /play trailer/i });
     expect(btn).toBeEnabled();
   });
 
   it("renders a disabled button when no usable video exists", () => {
     render(<TrailerModal videos={[]} />);
-    const btn = screen.getByRole("button", { name: /trailer tidak tersedia/i });
+    const btn = screen.getByRole("button", { name: /trailer unavailable/i });
     expect(btn).toBeDisabled();
   });
 
   it("opens a dialog with a YouTube iframe when clicked", async () => {
     render(<TrailerModal videos={[buildVideo()]} />);
-    await userEvent.click(screen.getByRole("button", { name: /putar trailer/i }));
+    await userEvent.click(screen.getByRole("button", { name: /play trailer/i }));
 
     const iframe = await screen.findByTitle(/official trailer/i);
     expect(iframe.tagName).toBe("IFRAME");
@@ -43,14 +43,14 @@ describe("TrailerModal", () => {
   it("falls back to a Teaser when no Trailer is available", () => {
     const teaser = buildVideo({ type: "Teaser", key: "TEASER_KEY", name: "Teaser" });
     render(<TrailerModal videos={[teaser]} />);
-    expect(screen.getByRole("button", { name: /putar trailer/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /play trailer/i })).toBeEnabled();
   });
 
   it("ignores non-YouTube videos", () => {
     const vimeo = buildVideo({ site: "Vimeo" });
     render(<TrailerModal videos={[vimeo]} />);
     expect(
-      screen.getByRole("button", { name: /trailer tidak tersedia/i }),
+      screen.getByRole("button", { name: /trailer unavailable/i }),
     ).toBeDisabled();
   });
 });

@@ -35,7 +35,7 @@ export default async function WatchMoviePage({
         className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-text"
       >
         <ChevronLeft className="h-4 w-4" />
-        Kembali ke detail
+        Back to detail
       </Link>
 
       <h1 className="text-xl font-semibold tracking-tight md:text-2xl">
@@ -63,8 +63,8 @@ export default async function WatchMoviePage({
       ) : null}
 
       <p className="text-xs text-muted-foreground">
-        Sumber streaming dari pihak ketiga (vidking.net). Kalau player gagal
-        memuat, coba refresh atau matikan adblock.
+        Streaming source from a third party (vidking.net). If the player
+        fails to load, try refreshing or disabling your adblocker.
       </p>
     </main>
   );

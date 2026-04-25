@@ -19,7 +19,7 @@ function formatRuntime(min: number | null): string {
   if (!min) return "";
   const h = Math.floor(min / 60);
   const m = min % 60;
-  return h > 0 ? `${h}j ${m}m` : `${m}m`;
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
 export default async function MovieDetailPage({
@@ -67,7 +67,7 @@ export default async function MovieDetailPage({
               href={`/watch/movie/${detail.id}`}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              Tonton
+              Watch
             </Link>
             <TrailerModal videos={videos.results} />
             <WatchlistButton
@@ -83,7 +83,7 @@ export default async function MovieDetailPage({
       {credits.cast.length > 0 ? (
         <section className="mx-auto max-w-screen-2xl space-y-3 px-4 pt-10 md:px-8">
           <h2 className="text-lg font-semibold tracking-tight md:text-xl">
-            Pemeran
+            Cast
           </h2>
           <CastList cast={credits.cast} limit={12} />
         </section>
@@ -91,7 +91,7 @@ export default async function MovieDetailPage({
 
       {similar.results.length > 0 ? (
         <section className="pt-10">
-          <MediaRow title="Mirip dengan ini">
+          <MediaRow title="More Like This">
             {similar.results.slice(0, 20).map((m) => (
               <MediaCard
                 key={m.id}

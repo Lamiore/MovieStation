@@ -5,7 +5,7 @@ import type { TmdbLocale } from "@/lib/tmdb/types";
 export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q")?.trim();
-  const locale = (searchParams.get("locale") ?? "id-ID") as TmdbLocale;
+  const locale = (searchParams.get("locale") ?? "en-US") as TmdbLocale;
 
   if (!query) {
     return NextResponse.json({ results: [] });

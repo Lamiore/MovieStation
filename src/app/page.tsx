@@ -26,28 +26,28 @@ export default function HomePage() {
 
       <ContinueWatchingRow />
 
-      <Suspense fallback={<MovieRowSkeleton title="Trending Minggu Ini" />}>
-        <MovieRow title="Trending Minggu Ini" fetcher={getTrendingMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Trending This Week" />}>
+        <MovieRow title="Trending This Week" fetcher={getTrendingMovies} />
       </Suspense>
 
-      <Suspense fallback={<MovieRowSkeleton title="Sedang Tayang" />}>
-        <MovieRow title="Sedang Tayang" fetcher={getNowPlayingMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Now Playing" />}>
+        <MovieRow title="Now Playing" fetcher={getNowPlayingMovies} />
       </Suspense>
 
-      <Suspense fallback={<MovieRowSkeleton title="Populer" />}>
-        <MovieRow title="Populer" fetcher={getPopularMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Popular" />}>
+        <MovieRow title="Popular" fetcher={getPopularMovies} />
       </Suspense>
 
-      <Suspense fallback={<MovieRowSkeleton title="Akan Datang" />}>
-        <MovieRow title="Akan Datang" fetcher={getUpcomingMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Upcoming" />}>
+        <MovieRow title="Upcoming" fetcher={getUpcomingMovies} />
       </Suspense>
 
-      <Suspense fallback={<MovieRowSkeleton title="Rating Tertinggi" />}>
-        <MovieRow title="Rating Tertinggi" fetcher={getTopRatedMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Top Rated" />}>
+        <MovieRow title="Top Rated" fetcher={getTopRatedMovies} />
       </Suspense>
 
-      <Suspense fallback={<MovieRowSkeleton title="Serial TV Populer" />}>
-        <TvRow title="Serial TV Populer" fetcher={getPopularTv} />
+      <Suspense fallback={<MovieRowSkeleton title="Popular TV Shows" />}>
+        <TvRow title="Popular TV Shows" fetcher={getPopularTv} />
       </Suspense>
     </main>
   );

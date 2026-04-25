@@ -14,7 +14,7 @@ export function EpisodeList({ tvId, season, episodes }: EpisodeListProps) {
   if (episodes.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        Belum ada episode untuk season ini.
+        No episodes available for this season.
       </p>
     );
   }
@@ -52,7 +52,7 @@ export function EpisodeList({ tvId, season, episodes }: EpisodeListProps) {
               </p>
               {ep.runtime ? (
                 <p className="pt-1 text-[11px] text-muted-foreground">
-                  {ep.runtime} menit
+                  {ep.runtime} min
                 </p>
               ) : null}
             </div>

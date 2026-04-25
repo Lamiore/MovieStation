@@ -25,7 +25,7 @@ export function ContinueWatchingRow() {
   if (recent.length === 0) return null;
 
   return (
-    <MediaRow title="Lanjutkan Menonton">
+    <MediaRow title="Continue Watching">
       {recent.map((item) => (
         <Link
           key={`${item.type}:${item.id}:${item.season ?? ""}:${item.episode ?? ""}`}

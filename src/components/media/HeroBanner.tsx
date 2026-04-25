@@ -150,7 +150,7 @@ export function HeroBanner({ items }: HeroBannerProps) {
               className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Play className="h-4 w-4 fill-current" />
-              Tonton
+              Watch
             </Link>
             <Link
               href={detailHref}

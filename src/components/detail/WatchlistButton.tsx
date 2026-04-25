@@ -19,7 +19,7 @@ export function WatchlistButton({
   const { isInWatchlist, toggle } = useWatchlist();
   const inList = isInWatchlist({ id, type });
   const Icon = inList ? BookmarkCheck : Bookmark;
-  const label = inList ? "Sudah di Watchlist" : "Tambah ke Watchlist";
+  const label = inList ? "In Watchlist" : "Add to Watchlist";
 
   return (
     <button

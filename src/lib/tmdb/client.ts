@@ -22,7 +22,7 @@ export async function tmdbFetch<T>(
   }
 
   const url = new URL(TMDB_BASE_URL + path);
-  url.searchParams.set("language", options.locale ?? "id-ID");
+  url.searchParams.set("language", options.locale ?? "en-US");
   url.searchParams.set("include_adult", "false");
   for (const [key, value] of Object.entries(options.searchParams ?? {})) {
     if (value !== undefined) url.searchParams.set(key, String(value));

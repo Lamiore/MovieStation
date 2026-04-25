@@ -33,8 +33,8 @@ describe("HeroBanner", () => {
 
   it("links the primary CTA to the current item's detail page", () => {
     render(<HeroBanner items={ITEMS} />);
-    const tonton = screen.getByRole("link", { name: /tonton/i });
-    expect(tonton).toHaveAttribute("href", "/movie/27205");
+    const watchLink = screen.getByRole("link", { name: /^watch$/i });
+    expect(watchLink).toHaveAttribute("href", "/movie/27205");
   });
 
   it("renders one slide indicator per item when there are multiple items", () => {
@@ -53,7 +53,7 @@ describe("HeroBanner", () => {
     expect(
       screen.getByRole("heading", { name: "Game of Thrones" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /tonton/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /^watch$/i })).toHaveAttribute(
       "href",
       "/tv/1399",
     );

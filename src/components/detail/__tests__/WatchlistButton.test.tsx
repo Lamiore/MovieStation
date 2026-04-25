@@ -18,7 +18,7 @@ describe("WatchlistButton", () => {
   it("starts as 'Tambah ke Watchlist' when nothing in storage", () => {
     render(<WatchlistButton {...SAMPLE} />);
     expect(
-      screen.getByRole("button", { name: /tambah ke watchlist/i }),
+      screen.getByRole("button", { name: /add to watchlist/i }),
     ).toBeInTheDocument();
   });
 
@@ -27,7 +27,7 @@ describe("WatchlistButton", () => {
     await userEvent.click(screen.getByRole("button"));
 
     expect(
-      screen.getByRole("button", { name: /sudah di watchlist/i }),
+      screen.getByRole("button", { name: /in watchlist/i }),
     ).toBeInTheDocument();
 
     const stored = JSON.parse(window.localStorage.getItem("nonton:watchlist")!);
@@ -40,7 +40,7 @@ describe("WatchlistButton", () => {
     await userEvent.click(screen.getByRole("button"));
     await userEvent.click(screen.getByRole("button"));
     expect(
-      screen.getByRole("button", { name: /tambah ke watchlist/i }),
+      screen.getByRole("button", { name: /add to watchlist/i }),
     ).toBeInTheDocument();
     expect(window.localStorage.getItem("nonton:watchlist")).toBe("[]");
   });
@@ -52,7 +52,7 @@ describe("WatchlistButton", () => {
     );
     render(<WatchlistButton {...SAMPLE} />);
     expect(
-      screen.getByRole("button", { name: /sudah di watchlist/i }),
+      screen.getByRole("button", { name: /in watchlist/i }),
     ).toBeInTheDocument();
   });
 });

@@ -34,7 +34,7 @@ export function TrailerModal({ videos }: TrailerModalProps) {
         disabled
         className="inline-flex items-center gap-2 rounded-md bg-elevated/60 px-4 py-2 text-sm font-semibold text-muted-foreground"
       >
-        Trailer tidak tersedia
+        Trailer unavailable
       </button>
     );
   }
@@ -48,7 +48,7 @@ export function TrailerModal({ videos }: TrailerModalProps) {
             className="inline-flex items-center gap-2 rounded-md bg-elevated px-4 py-2 text-sm font-semibold text-text ring-1 ring-border transition-colors hover:bg-elevated/80"
           >
             <Play className="h-4 w-4" />
-            Putar Trailer
+            Play Trailer
           </button>
         }
       />

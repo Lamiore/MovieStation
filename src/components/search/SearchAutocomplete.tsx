@@ -63,7 +63,7 @@ export function SearchAutocomplete() {
         <input
           role="searchbox"
           type="search"
-          placeholder="Cari film atau serial…"
+          placeholder="Search movies or shows…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setOpen(true)}
@@ -101,7 +101,7 @@ export function SearchAutocomplete() {
                         {title}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {r.media_type === "movie" ? "Film" : "Serial"}
+                        {r.media_type === "movie" ? "Movie" : "TV Show"}
                         {year ? ` • ${year}` : ""}
                       </p>
                     </div>
@@ -116,7 +116,7 @@ export function SearchAutocomplete() {
               onClick={() => setOpen(false)}
               className="block px-3 py-2 text-center text-xs font-medium text-primary hover:bg-elevated"
             >
-              Lihat semua hasil
+              See all results
             </Link>
           </div>
         </div>

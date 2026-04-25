@@ -23,23 +23,23 @@ export default function HistoryPage() {
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-            Riwayat Tonton
+            Watch History
           </h1>
           <p className="text-sm text-muted-foreground">
             {list.length > 0
-              ? `${list.length} riwayat tersimpan`
-              : "Belum ada riwayat tonton."}
+              ? `${list.length} item${list.length === 1 ? "" : "s"} in history`
+              : "No watch history yet."}
           </p>
         </div>
         {list.length > 0 ? (
           <button
             type="button"
             onClick={() => {
-              if (confirm("Hapus semua riwayat tonton?")) clear();
+              if (confirm("Clear all watch history?")) clear();
             }}
             className="rounded-md bg-elevated px-3 py-1.5 text-sm font-medium text-text ring-1 ring-border hover:bg-elevated/80"
           >
-            Hapus semua
+            Clear all
           </button>
         ) : null}
       </header>
@@ -47,13 +47,13 @@ export default function HistoryPage() {
       {list.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border bg-surface/40 p-10 text-center">
           <p className="text-sm text-muted-foreground">
-            Riwayat akan muncul setelah kamu nonton film atau episode.
+            History appears once you watch a movie or episode.
           </p>
           <Link
             href="/"
             className="mt-4 inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Mulai nonton
+            Start watching
           </Link>
         </div>
       ) : (

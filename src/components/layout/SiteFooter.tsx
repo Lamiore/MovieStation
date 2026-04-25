@@ -3,7 +3,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-border/60 px-4 py-8 text-xs text-muted-foreground md:px-8">
       <div className="mx-auto max-w-screen-2xl space-y-2">
         <p>
-          Data film &amp; serial TV{" "}
+          Movie &amp; TV data{" "}
           <a
             href="https://www.themoviedb.org"
             target="_blank"
@@ -15,8 +15,8 @@ export function SiteFooter() {
           .
         </p>
         <p>
-          Bauni tidak berafiliasi dengan TMDB atau penyedia streaming
-          mana pun. Konten ditampilkan dari sumber pihak ketiga.
+          Bauni is not affiliated with TMDB or any streaming provider.
+          Content is displayed from third-party sources.
         </p>
       </div>
     </footer>

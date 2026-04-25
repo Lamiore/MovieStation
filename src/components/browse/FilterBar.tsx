@@ -5,13 +5,13 @@ import { useCallback } from "react";
 import type { TmdbGenre } from "@/lib/tmdb/types";
 
 const SORT_OPTIONS = [
-  { value: "popularity.desc", label: "Paling Populer" },
-  { value: "vote_average.desc", label: "Rating Tertinggi" },
-  { value: "primary_release_date.desc", label: "Terbaru" },
+  { value: "popularity.desc", label: "Most Popular" },
+  { value: "vote_average.desc", label: "Highest Rated" },
+  { value: "primary_release_date.desc", label: "Newest" },
 ];
 
 const RATING_OPTIONS = [
-  { value: "", label: "Semua rating" },
+  { value: "", label: "Any rating" },
   { value: "5", label: "≥ 5" },
   { value: "6", label: "≥ 6" },
   { value: "7", label: "≥ 7" },
@@ -69,7 +69,7 @@ export function FilterBar({ genres }: FilterBarProps) {
                   : "bg-elevated px-3 py-1.5 text-xs font-medium text-text hover:bg-elevated/80"
               }
             >
-              {t === "movie" ? "Film" : "Serial"}
+              {t === "movie" ? "Movie" : "TV Show"}
             </button>
           ))}
         </div>
@@ -78,7 +78,7 @@ export function FilterBar({ genres }: FilterBarProps) {
           type="number"
           min={1900}
           max={2100}
-          placeholder="Tahun"
+          placeholder="Year"
           value={year}
           onChange={(e) => update({ year: e.target.value || null })}
           className="w-24 rounded-md bg-elevated px-3 py-1.5 text-xs text-text ring-1 ring-border placeholder:text-muted-foreground focus:outline-none focus:ring-primary"

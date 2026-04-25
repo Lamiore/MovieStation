@@ -32,16 +32,16 @@ export default async function SearchPage({
     <main className="mx-auto max-w-screen-2xl space-y-6 px-4 py-8 md:px-8 md:py-10">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-          Pencarian
+          Search
         </h1>
         {query ? (
           <p className="text-sm text-muted-foreground">
-            {items.length} hasil untuk{" "}
+            {items.length} result{items.length === 1 ? "" : "s"} for{" "}
             <span className="font-medium text-text">&ldquo;{query}&rdquo;</span>
           </p>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Ketik judul film atau serial di kolom pencarian di header.
+            Type a movie or show title in the search box in the header.
           </p>
         )}
       </header>
@@ -49,13 +49,13 @@ export default async function SearchPage({
       {query.length >= 2 && items.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border bg-surface/40 p-10 text-center">
           <p className="text-sm text-muted-foreground">
-            Tidak ada hasil untuk &ldquo;{query}&rdquo;.
+            No results for &ldquo;{query}&rdquo;.
           </p>
           <Link
             href="/browse"
             className="mt-4 inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Coba Browse
+            Try Browse
           </Link>
         </div>
       ) : null}

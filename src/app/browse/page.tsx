@@ -45,7 +45,7 @@ export default async function BrowsePage({
           Browse
         </h1>
         <p className="text-sm text-muted-foreground">
-          Filter berdasarkan tipe, genre, tahun, rating, dan urutan.
+          Filter by type, genre, year, rating, and sort order.
         </p>
       </header>
 
@@ -54,7 +54,7 @@ export default async function BrowsePage({
       {data.results.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border bg-surface/40 p-10 text-center">
           <p className="text-sm text-muted-foreground">
-            Tidak ada hasil untuk filter ini. Coba longgarkan filter.
+            No results for these filters. Try loosening them.
           </p>
         </div>
       ) : (

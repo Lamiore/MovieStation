@@ -65,7 +65,7 @@ export default async function WatchTvEpisodePage({
         className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-text"
       >
         <ChevronLeft className="h-4 w-4" />
-        Kembali ke detail
+        Back to detail
       </Link>
 
       <div>
@@ -100,7 +100,7 @@ export default async function WatchTvEpisodePage({
             className="inline-flex items-center gap-2 rounded-md bg-elevated px-4 py-2 text-sm font-semibold text-text ring-1 ring-border transition-colors hover:bg-elevated/80"
           >
             <ChevronLeft className="h-4 w-4" />
-            Episode Sebelumnya
+            Previous Episode
           </Link>
         ) : null}
         {next ? (
@@ -108,7 +108,7 @@ export default async function WatchTvEpisodePage({
             href={`/watch/tv/${id}/${seasonNumber}/${next.episode_number}`}
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Episode Berikutnya
+            Next Episode
             <ChevronRight className="h-4 w-4" />
           </Link>
         ) : null}
@@ -120,7 +120,7 @@ export default async function WatchTvEpisodePage({
 
       <section className="space-y-3 pt-6">
         <h2 className="text-base font-semibold tracking-tight md:text-lg">
-          Semua episode S{seasonNumber}
+          All S{seasonNumber} episodes
         </h2>
         <EpisodeList
           tvId={id}
@@ -130,8 +130,8 @@ export default async function WatchTvEpisodePage({
       </section>
 
       <p className="text-xs text-muted-foreground">
-        Sumber streaming dari pihak ketiga (vidking.net). Kalau player gagal
-        memuat, coba refresh atau matikan adblock.
+        Streaming source from a third party (vidking.net). If the player
+        fails to load, try refreshing or disabling your adblocker.
       </p>
     </main>
   );

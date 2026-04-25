@@ -62,7 +62,7 @@ export default async function TvDetailPage({
 
   const meta = [
     yearRange,
-    `${detail.number_of_seasons} season • ${detail.number_of_episodes} episode`,
+    `${detail.number_of_seasons} season${detail.number_of_seasons === 1 ? "" : "s"} • ${detail.number_of_episodes} episode${detail.number_of_episodes === 1 ? "" : "s"}`,
     detail.genres.map((g) => g.name).join(", "),
     detail.vote_average ? `★ ${detail.vote_average.toFixed(1)}` : "",
   ].filter(Boolean);
@@ -83,7 +83,7 @@ export default async function TvDetailPage({
                 href={`/watch/tv/${detail.id}/${currentSeason}/${season.episodes[0].episode_number}`}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Tonton
+                Watch
               </Link>
             ) : null}
             <WatchlistButton
@@ -99,7 +99,7 @@ export default async function TvDetailPage({
       {credits.cast.length > 0 ? (
         <section className="mx-auto max-w-screen-2xl space-y-3 px-4 pt-10 md:px-8">
           <h2 className="text-lg font-semibold tracking-tight md:text-xl">
-            Pemeran
+            Cast
           </h2>
           <CastList cast={credits.cast} limit={12} />
         </section>
@@ -109,7 +109,7 @@ export default async function TvDetailPage({
         <section className="mx-auto max-w-screen-2xl space-y-4 px-4 pt-10 md:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold tracking-tight md:text-xl">
-              Episode
+              Episodes
             </h2>
             <SeasonSelector
               tvId={detail.id}
@@ -125,7 +125,7 @@ export default async function TvDetailPage({
             />
           ) : (
             <p className="text-sm text-muted-foreground">
-              Tidak bisa memuat episode untuk season ini.
+              Couldn&apos;t load episodes for this season.
             </p>
           )}
         </section>
