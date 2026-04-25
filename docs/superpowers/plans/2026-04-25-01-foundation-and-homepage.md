@@ -10,6 +10,21 @@
 
 **Note on Tailwind v4:** The scaffold uses Tailwind v4, which has no `tailwind.config.ts`. Theme tokens are defined inside `@theme` in `globals.css`. PostCSS uses the `@tailwindcss/postcss` plugin. Import is `@import "tailwindcss"`, not `@tailwind base/components/utilities`.
 
+**Token naming convention** (after Task 3 stabilizes the palette): the project uses two non-overlapping sets of utility classes:
+
+| Purpose | Use | Source |
+|---|---|---|
+| Page bg | `bg-bg` | our `@theme` |
+| Card / row container bg | `bg-surface` | our `@theme` |
+| Elevated bg (chips, tooltips) | `bg-elevated` | our `@theme` |
+| Default text | `text-text` | our `@theme` |
+| Muted/secondary text (year, byline) | `text-muted-foreground` | shadcn |
+| Brand accent (rating, play button) | `text-primary` / `bg-primary` | shadcn (mapped to `#e50914` in `.dark`) |
+| Borders & rings | `border-border` / `ring-border` | shadcn (mapped to `#2a2a2a` in `.dark`) |
+| shadcn components (Button etc.) | `bg-primary text-primary-foreground` etc. | shadcn |
+
+We do NOT define `--color-border`, `--color-muted`, or `--color-accent` in our `@theme` — those collide with shadcn's tokens and would silently lose. Use the shadcn equivalents above instead.
+
 **Deferred to later plans:** next-intl / language toggle, hero banner, remaining homepage rows, detail pages, watch pages, watchlist, history, search, browse. Plan 1 hardcodes UI strings in Indonesian — no translation layer yet.
 
 ---
@@ -951,10 +966,10 @@ export function MediaCard({
       </div>
       <div className="mt-2 px-0.5">
         <p className="truncate text-sm font-medium text-text">{title}</p>
-        <div className="mt-0.5 flex items-center gap-2 text-xs text-muted">
+        <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
           <span>{year}</span>
           <span aria-hidden>•</span>
-          <span className="text-accent">{rating}</span>
+          <span className="text-primary">{rating}</span>
         </div>
       </div>
     </Link>
