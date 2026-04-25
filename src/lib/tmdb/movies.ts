@@ -1,8 +1,19 @@
 import "server-only";
 import { tmdbFetch } from "./client";
-import type { TmdbLocale, TmdbMovie, TmdbPaginatedResponse } from "./types";
+import type {
+  TmdbCredits,
+  TmdbLocale,
+  TmdbMovie,
+  TmdbMovieDetail,
+  TmdbPaginatedResponse,
+  TmdbVideosResponse,
+} from "./types";
 
 export interface GetTrendingOptions {
+  locale?: TmdbLocale;
+}
+
+export interface DetailOptions {
   locale?: TmdbLocale;
 }
 
@@ -42,6 +53,42 @@ export function getNowPlayingMovies(
   options: GetTrendingOptions = {},
 ): Promise<TmdbPaginatedResponse<TmdbMovie>> {
   return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/movie/now_playing", {
+    locale: options.locale,
+  });
+}
+
+export function getMovieDetail(
+  id: number,
+  options: DetailOptions = {},
+): Promise<TmdbMovieDetail> {
+  return tmdbFetch<TmdbMovieDetail>(`/movie/${id}`, {
+    locale: options.locale,
+  });
+}
+
+export function getMovieCredits(
+  id: number,
+  options: DetailOptions = {},
+): Promise<TmdbCredits> {
+  return tmdbFetch<TmdbCredits>(`/movie/${id}/credits`, {
+    locale: options.locale,
+  });
+}
+
+export function getMovieVideos(
+  id: number,
+  options: DetailOptions = {},
+): Promise<TmdbVideosResponse> {
+  return tmdbFetch<TmdbVideosResponse>(`/movie/${id}/videos`, {
+    locale: options.locale,
+  });
+}
+
+export function getMovieSimilar(
+  id: number,
+  options: DetailOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>(`/movie/${id}/similar`, {
     locale: options.locale,
   });
 }
