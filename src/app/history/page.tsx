@@ -2,17 +2,29 @@
 
 import Link from "next/link";
 import { useHistory } from "@/hooks/useHistory";
+import type { HistoryItem } from "@/lib/storage/schema";
 
-function buildHref(item: {
-  id: number;
-  type: "movie" | "tv";
-  season?: number;
-  episode?: number;
-}): string {
-  if (item.type === "tv" && item.season != null && item.episode != null) {
+function buildHref(item: HistoryItem): string {
+  if (item.type === "tv") {
     return `/watch/tv/${item.id}/${item.season}/${item.episode}`;
   }
+  if (item.type === "anime") {
+    return `/watch/anime/${item.anilistId}/${item.episode}`;
+  }
   return `/watch/movie/${item.id}`;
+}
+
+function entryKey(item: HistoryItem): string {
+  if (item.type === "tv") return `tv:${item.id}:${item.season}:${item.episode}`;
+  if (item.type === "anime") return `anime:${item.anilistId}:${item.episode}`;
+  return `movie:${item.id}`;
+}
+
+function entryImage(item: HistoryItem): string | null {
+  if (item.type === "anime") return item.coverUrl;
+  return item.posterPath
+    ? `https://image.tmdb.org/t/p/w342${item.posterPath}`
+    : null;
 }
 
 export default function HistoryPage() {
@@ -58,32 +70,37 @@ export default function HistoryPage() {
         </div>
       ) : (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {list.map((item) => (
-            <li
-              key={`${item.type}:${item.id}:${item.season ?? ""}:${item.episode ?? ""}`}
-            >
-              <Link href={buildHref(item)} className="block w-full">
-                <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface ring-1 ring-border">
-                  {item.posterPath ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={`https://image.tmdb.org/t/p/w342${item.posterPath}`}
-                      alt={item.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : null}
-                </div>
-                <p className="mt-2 truncate text-sm font-medium text-text">
-                  {item.title}
-                </p>
-                {item.season != null && item.episode != null ? (
-                  <p className="text-xs text-muted-foreground">
-                    S{item.season} • E{item.episode}
+          {list.map((item) => {
+            const img = entryImage(item);
+            return (
+              <li key={entryKey(item)}>
+                <Link href={buildHref(item)} className="block w-full">
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface ring-1 ring-border">
+                    {img ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={img}
+                        alt={item.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <p className="mt-2 truncate text-sm font-medium text-text">
+                    {item.title}
                   </p>
-                ) : null}
-              </Link>
-            </li>
-          ))}
+                  {item.type === "tv" ? (
+                    <p className="text-xs text-muted-foreground">
+                      S{item.season} • E{item.episode}
+                    </p>
+                  ) : item.type === "anime" ? (
+                    <p className="text-xs text-muted-foreground">
+                      Episode {item.episode}
+                    </p>
+                  ) : null}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </main>

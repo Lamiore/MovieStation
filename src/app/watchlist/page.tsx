@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useWatchlist } from "@/hooks/useWatchlist";
 import { MediaCard } from "@/components/media/MediaCard";
+import type { WatchlistItem } from "@/lib/storage/schema";
+
+function entryKey(item: WatchlistItem): string {
+  if (item.type === "anime") return `anime:${item.anilistId}`;
+  return `${item.type}:${item.id}`;
+}
 
 export default function WatchlistPage() {
   const { list } = useWatchlist();
@@ -35,15 +41,36 @@ export default function WatchlistPage() {
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {list.map((item) => (
-            <div key={`${item.type}:${item.id}`} className="w-full">
-              <MediaCard
-                id={item.id}
-                type={item.type}
-                title={item.title}
-                posterPath={item.posterPath}
-                releaseDate=""
-                voteAverage={0}
-              />
+            <div key={entryKey(item)} className="w-full">
+              {item.type === "anime" ? (
+                <Link
+                  href={`/anime/${item.anilistId}`}
+                  className="block w-full"
+                >
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface ring-1 ring-border">
+                    {item.coverUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={item.coverUrl}
+                        alt={item.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <p className="mt-2 truncate text-sm font-medium text-text">
+                    {item.title}
+                  </p>
+                </Link>
+              ) : (
+                <MediaCard
+                  id={item.id}
+                  type={item.type}
+                  title={item.title}
+                  posterPath={item.posterPath}
+                  releaseDate=""
+                  voteAverage={0}
+                />
+              )}
             </div>
           ))}
         </div>
