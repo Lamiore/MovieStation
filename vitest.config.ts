@@ -13,6 +13,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // server-only throws on import outside Next.js. Stub it so unit
+      // tests can import server-only modules (e.g. tmdb/client).
       "server-only": path.resolve(__dirname, "./src/test/server-only-stub.ts"),
     },
   },
