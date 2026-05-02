@@ -6,12 +6,11 @@ import {
   getMovieCredits,
   getMovieSimilar,
 } from "@/lib/tmdb/movies";
-import { EmbedPlayer } from "@/components/player/EmbedPlayer";
+import { WatchPlayer } from "@/components/player/WatchPlayer";
 import { WatchTracker } from "@/components/player/WatchTracker";
 import { CastList } from "@/components/detail/CastList";
 import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
-import { buildEmbedUrl } from "@/lib/embed/buildEmbedUrl";
 import { formatRuntime } from "@/lib/format/runtime";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +36,6 @@ export default async function WatchMoviePage({
     throw err;
   }
 
-  const src = buildEmbedUrl({ type: "movie", id });
   const year = detail.release_date ? detail.release_date.slice(0, 4) : "";
   const runtime = formatRuntime(detail.runtime);
   const rating =
@@ -65,7 +63,11 @@ export default async function WatchMoviePage({
           ) : null}
         </h1>
 
-        <EmbedPlayer src={src} title={`${detail.title} (${year})`} />
+        <WatchPlayer
+          type="movie"
+          id={id}
+          title={`${detail.title} (${year})`}
+        />
 
         <WatchTracker
           payload={{
@@ -133,8 +135,8 @@ export default async function WatchMoviePage({
       ) : null}
 
       <p className="mx-auto max-w-screen-xl px-4 pt-6 text-xs text-muted-foreground md:px-8">
-        Streaming source from a third party (videasy.net). If the player
-        fails to load, try refreshing or disabling your adblocker.
+        Streaming source from third-party providers. If the player fails to
+        load, try switching server above or disabling your adblocker.
       </p>
     </main>
   );
