@@ -8,13 +8,12 @@ import {
   getTvSimilar,
   getSeasonDetail,
 } from "@/lib/tmdb/tv";
-import { EmbedPlayer } from "@/components/player/EmbedPlayer";
+import { WatchPlayer } from "@/components/player/WatchPlayer";
 import { WatchTracker } from "@/components/player/WatchTracker";
 import { CastList } from "@/components/detail/CastList";
 import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 import { EpisodeList } from "@/components/tv/EpisodeList";
-import { buildEmbedUrl } from "@/lib/embed/buildEmbedUrl";
 import { formatRuntime } from "@/lib/format/runtime";
 
 export const dynamic = "force-dynamic";
@@ -55,13 +54,6 @@ export default async function WatchTvEpisodePage({
     (ep) => ep.episode_number === episodeNumber,
   );
   if (!episode) notFound();
-
-  const src = buildEmbedUrl({
-    type: "tv",
-    id,
-    season: seasonNumber,
-    episode: episodeNumber,
-  });
 
   const idx = season.episodes.findIndex(
     (ep) => ep.episode_number === episodeNumber,
@@ -108,8 +100,11 @@ export default async function WatchTvEpisodePage({
           </p>
         </div>
 
-        <EmbedPlayer
-          src={src}
+        <WatchPlayer
+          type="tv"
+          id={id}
+          season={seasonNumber}
+          episode={episodeNumber}
           title={`${detail.name} S${seasonNumber}E${episodeNumber}`}
         />
 
@@ -263,8 +258,8 @@ export default async function WatchTvEpisodePage({
       ) : null}
 
       <p className="mx-auto max-w-screen-xl px-4 pt-6 text-xs text-muted-foreground md:px-8">
-        Streaming source from a third party (videasy.net). If the player
-        fails to load, try refreshing or disabling your adblocker.
+        Streaming source from third-party providers. If the player fails to
+        load, try switching server above or disabling your adblocker.
       </p>
     </main>
   );
