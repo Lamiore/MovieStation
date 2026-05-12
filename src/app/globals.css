@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-display: var(--font-anton);
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -141,6 +142,7 @@
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-anton: var(--font-anton), "Bebas Neue", sans-serif;
 }
 
 html,
@@ -220,3 +222,46 @@ body {
   transform-origin: left;
   animation: hero-progress var(--hero-duration, 6s) linear forwards;
 }
+
+/* Hide the YouTube iframe for ~1.2s after it mounts so the
+   pre-autoplay play-button overlay never lands in front of the
+   viewer. By the time the iframe fades in, autoplay has started
+   and only the running video is visible. The backdrop poster sits
+   underneath and remains visible during the delay. */
+@keyframes hero-trailer-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-trailer-in {
+  animation: hero-trailer-in 700ms ease-out 1200ms both;
+}
+
+/* Top 10 row — Netflix-style oversized italic hollow numeral sitting
+   to the left of each (smaller-than-default) poster. Fully visible —
+   no overlap — so narrow digits like "1" remain readable. */
+.top-ten-rank {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(140px, 22vw, 220px);
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--color-text);
+  user-select: none;
+  pointer-events: none;
+  margin-bottom: -6px;
+}
+
+@media (min-width: 768px) {
+  .top-ten-rank {
+    -webkit-text-stroke: 4px var(--color-text);
+    margin-bottom: -10px;
+  }
+}
+

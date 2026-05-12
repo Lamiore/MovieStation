@@ -30,15 +30,15 @@ export function ContinueWatchingRow() {
         <Link
           key={`${item.type}:${item.id}:${item.season ?? ""}:${item.episode ?? ""}`}
           href={buildHref(item)}
-          className="group block w-[160px] shrink-0 md:w-[200px]"
+          className="group block w-[176px] shrink-0 md:w-[232px]"
         >
-          <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface ring-1 ring-border transition-transform group-hover:scale-[1.03]">
+          <div className="relative aspect-[2/3] overflow-hidden rounded-md bg-surface ring-1 ring-border transition duration-300 group-hover:scale-[1.04] group-hover:ring-text/40 group-hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.85)]">
             {item.posterPath ? (
               <Image
                 src={POSTER_BASE + item.posterPath}
                 alt={item.title}
                 fill
-                sizes="(min-width: 768px) 200px, 160px"
+                sizes="(min-width: 768px) 232px, 176px"
                 className="object-cover"
               />
             ) : null}

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import {
   getTrendingMovies,
+  getTrendingMoviesToday,
   getPopularMovies,
   getTopRatedMovies,
   getUpcomingMovies,
@@ -12,6 +13,7 @@ import { MediaCard } from "@/components/media/MediaCard";
 import { MediaRow } from "@/components/media/MediaRow";
 import { MediaCardSkeleton } from "@/components/media/MediaCardSkeleton";
 import { HeroBanner } from "@/components/media/HeroBanner";
+import { TopTenRow } from "@/components/media/TopTenRow";
 import { ContinueWatchingRow } from "@/components/personal/ContinueWatchingRow";
 import type { TmdbMovie, TmdbPaginatedResponse, TmdbTvShow } from "@/lib/tmdb/types";
 
@@ -19,15 +21,15 @@ export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
-    <main className="min-h-dvh space-y-10 pb-12">
+    <main className="min-h-dvh space-y-8 pb-16 md:space-y-12">
       <Suspense fallback={<HeroSkeleton />}>
         <Hero />
       </Suspense>
 
       <ContinueWatchingRow />
 
-      <Suspense fallback={<MovieRowSkeleton title="Trending This Week" />}>
-        <MovieRow title="Trending This Week" fetcher={getTrendingMovies} />
+      <Suspense fallback={<MovieRowSkeleton title="Top 10 Today" />}>
+        <TopTenToday title="Top 10 Today" />
       </Suspense>
 
       <Suspense fallback={<MovieRowSkeleton title="Now Playing" />}>
@@ -146,4 +148,15 @@ function MovieRowSkeleton({ title }: { title: string }) {
       ))}
     </MediaRow>
   );
+}
+
+async function TopTenToday({ title }: { title: string }) {
+  const { results } = await getTrendingMoviesToday();
+  const items = results.slice(0, 10).map((m) => ({
+    id: m.id,
+    type: "movie" as const,
+    title: m.title,
+    posterPath: m.poster_path,
+  }));
+  return <TopTenRow title={title} items={items} />;
 }

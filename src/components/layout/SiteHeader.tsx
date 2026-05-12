@@ -1,38 +1,30 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { SearchAutocomplete } from "@/components/search/SearchAutocomplete";
-
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/watchlist", label: "Watchlist" },
-  { href: "/history", label: "History" },
-];
+import { NavLinks } from "@/components/layout/NavLinks";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60">
-      <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-4 px-4 md:h-16 md:gap-6 md:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-bg/60 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/40">
+      <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-4 px-4 md:h-16 md:gap-8 md:px-8">
         <Link
           href="/"
-          className="text-base font-bold tracking-tight text-text hover:text-primary md:text-lg"
+          aria-label="Bauni — home"
+          className="group flex shrink-0 items-center gap-2.5"
         >
-          Bauni
+          <span
+            aria-hidden
+            className="relative flex h-2 w-2 items-center justify-center"
+          >
+            <span className="absolute inset-0 animate-ping rounded-full bg-primary/70" />
+            <span className="relative h-2 w-2 rounded-full bg-primary" />
+          </span>
+          <span className="font-display text-2xl uppercase leading-none tracking-[0.08em] text-text transition-colors group-hover:text-primary md:text-[28px]">
+            Bauni
+          </span>
         </Link>
 
-        <nav
-          aria-label="Primary"
-          className="hidden items-center gap-5 text-sm md:flex"
-        >
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-muted-foreground transition-colors hover:text-text"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks />
 
         <div className="ml-auto flex items-center gap-3">
           <div className="hidden md:block">

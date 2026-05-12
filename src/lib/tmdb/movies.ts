@@ -25,6 +25,14 @@ export function getTrendingMovies(
   });
 }
 
+export function getTrendingMoviesToday(
+  options: GetTrendingOptions = {},
+): Promise<TmdbPaginatedResponse<TmdbMovie>> {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovie>>("/trending/movie/day", {
+    locale: options.locale,
+  });
+}
+
 export function getPopularMovies(
   options: GetTrendingOptions = {},
 ): Promise<TmdbPaginatedResponse<TmdbMovie>> {

@@ -96,7 +96,7 @@ export function HeroBanner({ items }: HeroBannerProps) {
                 aria-hidden
                 tabIndex={-1}
                 allow="autoplay; encrypted-media; picture-in-picture"
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[170%] w-[170%] -translate-x-1/2 -translate-y-1/2 border-0"
+                className="hero-trailer-in pointer-events-none absolute left-1/2 top-1/2 h-[170%] w-[170%] -translate-x-1/2 -translate-y-1/2 border-0"
               />
             ) : null}
           </div>
@@ -118,7 +118,7 @@ export function HeroBanner({ items }: HeroBannerProps) {
         <div key={current.id} className="max-w-2xl">
           <h2
             aria-label={current.title}
-            className="text-3xl font-bold tracking-tight md:text-6xl"
+            className="font-display text-5xl uppercase leading-[0.95] tracking-[0.01em] md:text-7xl"
           >
             {titleChars.map((ch, i) => (
               <span
